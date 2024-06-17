@@ -26,8 +26,11 @@ void Enemy::Load()
         std::cout << "Somthing wrong" << std::endl;
 }
 
-void Enemy::Update()
+void Enemy::Update(Player& player)
 {
+    sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition();
+    direction = Math::NormalizeVector(direction);
+    sprite.setPosition(sprite.getPosition() + direction * bulletSpeed);
 }
 
 void Enemy::Draw(sf::RenderWindow& window)

@@ -14,8 +14,8 @@ int main()
     Player player;
     Enemy enemy;
 
-    enemy.Initialize();
     player.Initialize();
+    enemy.Initialize();
 
     player.Load();
     enemy.Load();
@@ -32,10 +32,10 @@ int main()
         }
         
         window.clear(); // очистка окна
-        enemy.Update();
         player.Update(event, window);
-        enemy.Draw(window);
+        enemy.Update(player);
         player.Draw(window);
+        enemy.Draw(window);
         window.display(); // отрисовка
     }
 

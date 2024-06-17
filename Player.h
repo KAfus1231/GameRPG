@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Math.h"
 
 class Player
 {
@@ -27,6 +28,5 @@ public:
 	void Update(sf::Event& event, sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
 	// пули
-	sf::Vector2f NormalizeVector(sf::Vector2f vector);
 	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
 };

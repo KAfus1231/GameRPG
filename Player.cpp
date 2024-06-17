@@ -6,18 +6,6 @@ void Player::Initialize()
 {
 }
 
-sf::Vector2f Player::NormalizeVector(sf::Vector2f vector)
-{
-    float m = std::sqrt(vector.x * vector.x + vector.y * vector.y);
-
-    sf::Vector2f normalizedVector;
-
-    normalizedVector.x = vector.x / m;
-    normalizedVector.y = vector.y / m;
-
-    return normalizedVector;
-}
-
 //слежка за курсором 
 sf::Vector2f Player::BulletWatch(sf::RenderWindow& window)
 {
@@ -64,7 +52,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение пер
         bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // добавление новой пули в вектор
         bullets[bullets.size() - 1].setPosition(sprite.getPosition() + sf::Vector2f(80, 64));
         direction = BulletWatch(window) - bullets[bullets.size() - 1].getPosition(); // направление выстрела
-        direction = NormalizeVector(direction); // нормализация вектора
+        direction = Math::NormalizeVector(direction); // нормализация вектора
         bulletsDirection.push_back(direction); // добавление в вектор позиции курсора
     }
 
@@ -153,9 +141,3 @@ void Player::Draw(sf::RenderWindow& window)
     for (size_t i = 0; i < bullets.size(); i++)
         window.draw(bullets[i]);
 }
-
-//void Player::DrawBullet(sf::RenderWindow& window)
-//{
-//    for (size_t i = 0; i < bullets.size(); i++)
-//        window.draw(bullets[i]);
-//}
