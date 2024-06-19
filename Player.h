@@ -1,32 +1,38 @@
-#pragma once
+п»ї#pragma once
 #include <SFML/Graphics.hpp>
 #include "Math.h"
 
 class Player
 {
 private:
-	// текстура игрока
+	// С‚РµРєСЃС‚СѓСЂР° РёРіСЂРѕРєР°
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	sf::Clock clockForAnimation; // таймер для анимаций
-	float frame = 0; // кадр персонажа
-	float frameSpeed = 0.2f; //скорость смены кадров анимации
+	sf::Vector2i size; // СЂР°Р·РјРµСЂ РїРµСЂСЃРѕРЅР°Р¶Р°
 
-	sf::Clock clockForBullets; // таймер для пуль
-	float bulletsSpeed = 0.08f; // скорость смены кадров стрельбы
-	float bulletSpeed = 10.0f; // скорость пули
+	sf::Clock clockForAnimation; // С‚Р°Р№РјРµСЂ РґР»СЏ Р°РЅРёРјР°С†РёР№
+	float frame = 0; // РєР°РґСЂ РїРµСЂСЃРѕРЅР°Р¶Р°
+	float frameSpeed = 0.2f; //СЃРєРѕСЂРѕСЃС‚СЊ СЃРјРµРЅС‹ РєР°РґСЂРѕРІ Р°РЅРёРјР°С†РёРё
 
-	sf::Vector2f direction; // направление пули
-	std::vector<sf::RectangleShape> bullets; // вектор с пулями
-	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
+	sf::Clock clockForBullets; // С‚Р°Р№РјРµСЂ РґР»СЏ РїСѓР»СЊ
+	float bulletsSpeed = 0.08f; // СЃРєРѕСЂРѕСЃС‚СЊ СЃРјРµРЅС‹ РєР°РґСЂРѕРІ СЃС‚СЂРµР»СЊР±С‹
+	float bulletSpeed = 10.0f; // СЃРєРѕСЂРѕСЃС‚СЊ РїСѓР»Рё
+
+	sf::Vector2f direction; // РЅР°РїСЂР°РІР»РµРЅРёРµ РїСѓР»Рё
+	std::vector<sf::RectangleShape> bullets; // РІРµРєС‚РѕСЂ СЃ РїСѓР»СЏРјРё
+	std::vector<sf::Vector2f> bulletsDirection; // РІРµРєС‚РѕСЂ, С…СЂР°РЅСЏС‰РёР№ РЅР°РїСЂР°РІР»РµРЅРёРµ РїСѓР»СЊ
+
+	sf::RectangleShape boundingRectangle; // СЂР°РјРєР° РґР»СЏ РёРіСЂРѕРєР°
+
 public:
-	// игрок 
+	// РёРіСЂРѕРє 
 	sf::Sprite getPlayerSprite();
 	void Initialize();
 	void Load();
 	void Update(sf::Event& event, sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
-	// пули
-	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
+	// РїСѓР»Рё
+	sf::Vector2f BulletWatch(sf::RenderWindow& window);// СЃР»РµР¶РєР° Р·Р° РєСѓСЂСЃРѕСЂРѕРј 
 };
+

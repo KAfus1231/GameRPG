@@ -1,70 +1,76 @@
-#include "Player.h"
+п»ї#include "Player.h"
 #include<iostream>
 #include"Constans.h"
 
 void Player::Initialize()
 {
+    boundingRectangle.setFillColor(sf::Color::Transparent); // РєРѕРЅС‚СѓСЂ
+    boundingRectangle.setOutlineColor(sf::Color::Blue);
+    boundingRectangle.setOutlineThickness(1);
+
+    size = sf::Vector2i(64, 64); // СЂР°Р·РјРµСЂ РїРµСЂСЃРѕРЅР°Р¶Р°
 }
 
-//слежка за курсором 
+//СЃР»РµР¶РєР° Р·Р° РєСѓСЂСЃРѕСЂРѕРј 
 sf::Vector2f Player::BulletWatch(sf::RenderWindow& window)
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition); // преобразование 2i к 2f *не знаю нах, но пусть будет*
+    sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition); // РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ 2i Рє 2f *РЅРµ Р·РЅР°СЋ РЅР°С…, РЅРѕ РїСѓСЃС‚СЊ Р±СѓРґРµС‚*
 
     return mousePositionWindow;
 }
 
-void Player::Load() // загрузка персонажа
+void Player::Load() // Р·Р°РіСЂСѓР·РєР° РїРµСЂСЃРѕРЅР°Р¶Р°
 {
-    if (texture.loadFromFile("Assets/Player/Textures/spritesheet.png")) // загрузка текстурки
+    if (texture.loadFromFile("Assets/Player/Textures/spritesheet.png")) // Р·Р°РіСЂСѓР·РєР° С‚РµРєСЃС‚СѓСЂРєРё
     {
         std::cout << "player loaded" << std::endl;
-        sprite.setTexture(texture);// передача в спрайт текстуры игрока
-
-        sprite.setTextureRect(sf::IntRect(0, 0, 64, 64)); // выбор текстуры игрока
-        sprite.scale(sf::Vector2f(3.0, 3.0)); // размер персонажа
+        sprite.setTexture(texture);// РїРµСЂРµРґР°С‡Р° РІ СЃРїСЂР°Р№С‚ С‚РµРєСЃС‚СѓСЂС‹ РёРіСЂРѕРєР°
+        sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y)); // РІС‹Р±РѕСЂ С‚РµРєСЃС‚СѓСЂС‹ РёРіСЂРѕРєР°
         sprite.setPosition(sf::Vector2f(1650, 800));
+
+        sprite.scale(sf::Vector2f(2.0, 2.0)); // СЂР°Р·РјРµСЂ РїРµСЂСЃРѕРЅР°Р¶Р°
+        boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y)); // СѓС‚СЃР°РЅРѕРІРєР° СЂР°Р·РјРµСЂР° РєРѕРЅС‚СѓСЂР°
     }
     else
         std::cout << "we have a problem";
 }
 
-sf::Sprite Player::getPlayerSprite()
+sf::Sprite Player::getPlayerSprite() // РіРµС‚С‚РµСЂ РґР»СЏ СЃРїСЂР°Р№С‚Р°
 {
     return sprite;
 }
 
-void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение персонажа
+void Player::Update(sf::Event& event, sf::RenderWindow& window)  // РґРІРёР¶РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р°
 {
-    float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
-    float timeForBullets = clockForBullets.getElapsedTime().asSeconds(); // время с момента запуска таймера для пуль
+    float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // РІСЂРµРјСЏ СЃ РјРѕРјРµРЅС‚Р° Р·Р°РїСѓСЃРєР° С‚Р°Р№РјРµСЂР° РґР»СЏ Р°РЅРёРјР°С†РёРё
+    float timeForBullets = clockForBullets.getElapsedTime().asSeconds(); // РІСЂРµРјСЏ СЃ РјРѕРјРµРЅС‚Р° Р·Р°РїСѓСЃРєР° С‚Р°Р№РјРµСЂР° РґР»СЏ РїСѓР»СЊ
 
-    // флаги для движения персонажа
+    // С„Р»Р°РіРё РґР»СЏ РґРІРёР¶РµРЅРёСЏ РїРµСЂСЃРѕРЅР°Р¶Р°
     bool isMovingUp = false;
     bool isMovingLeft = false;
     bool isMovingDown = false;
     bool isMovingRight = false;
 
-    // управление пулями
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timeForBullets > bulletsSpeed) // утановка позиции пули
+    // СѓРїСЂР°РІР»РµРЅРёРµ РїСѓР»СЏРјРё
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timeForBullets > bulletsSpeed) // СѓС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё РїСѓР»Рё
     {
-        bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // добавление новой пули в вектор
+        bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ РїСѓР»Рё РІ РІРµРєС‚РѕСЂ
         bullets[bullets.size() - 1].setPosition(sprite.getPosition() + sf::Vector2f(80, 64));
-        direction = BulletWatch(window) - bullets[bullets.size() - 1].getPosition(); // направление выстрела
-        direction = Math::NormalizeVector(direction); // нормализация вектора
-        bulletsDirection.push_back(direction); // добавление в вектор позиции курсора
+        direction = BulletWatch(window) - bullets[bullets.size() - 1].getPosition(); // РЅР°РїСЂР°РІР»РµРЅРёРµ РІС‹СЃС‚СЂРµР»Р°
+        direction = Math::NormalizeVector(direction); // РЅРѕСЂРјР°Р»РёР·Р°С†РёСЏ РІРµРєС‚РѕСЂР°
+        bulletsDirection.push_back(direction); // РґРѕР±Р°РІР»РµРЅРёРµ РІ РІРµРєС‚РѕСЂ РїРѕР·РёС†РёРё РєСѓСЂСЃРѕСЂР°
     }
 
-    for (size_t i = 0; i < bullets.size(); i++) // отрисовка стрельбы
+    for (size_t i = 0; i < bullets.size(); i++) // РѕС‚СЂРёСЃРѕРІРєР° СЃС‚СЂРµР»СЊР±С‹
     {
-        bullets[i].setPosition(bullets[i].getPosition() + bulletsDirection[i] * bulletSpeed); // установка поцизии пули
+        bullets[i].setPosition(bullets[i].getPosition() + bulletsDirection[i] * bulletSpeed); // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕС†РёР·РёРё РїСѓР»Рё
     }
 
     if (timeForBullets > bulletsSpeed)
         clockForBullets.restart();
-    
-    // управление персонажем
+
+    // СѓРїСЂР°РІР»РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶РµРј
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         isMovingUp = true;
     else
@@ -94,7 +100,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение пер
         }
     }
 
-    if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
+    if (timeForAnimation > frameSpeed) // РїРµСЂРµР·Р°РїСѓСЃРє С‚Р°Р№РјРµСЂР° РµСЃР»Рё РІСЂРµРјСЏ РїСЂРµРІС‹СЃРёР»Рѕ Р·Р°РґР°РЅРЅРѕРµ 
         clockForAnimation.restart();
 
     sf::Vector2f movement(0, 0);
@@ -132,12 +138,14 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение пер
     }
 
     sprite.move(movement);
+    boundingRectangle.setPosition(sprite.getPosition());
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
     window.draw(sprite);
-
+    window.draw(boundingRectangle);
     for (size_t i = 0; i < bullets.size(); i++)
         window.draw(bullets[i]);
 }
+

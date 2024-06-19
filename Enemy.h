@@ -1,14 +1,18 @@
-#pragma once
+п»ї#pragma once
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 
 class Enemy
 {
 private:
-	// текстура врага
+	// С‚РµРєСЃС‚СѓСЂР° РІСЂР°РіР°
 	sf::Texture texture;
 	sf::Sprite sprite;
-	float bulletSpeed = 2.5f; // скорость игрока
+
+	sf::Vector2i size; // СЂР°Р·РјРµСЂ РІСЂР°РіР°
+	sf::RectangleShape boundingRectangle; // СЂР°РјРєР° РґР»СЏ РІСЂР°РіР°
+
+	float bulletSpeed = 2.5f; // СЃРєРѕСЂРѕСЃС‚СЊ РёРіСЂРѕРєР°
 public:
 	sf::Sprite getEnemySprite();
 	void Initialize();
