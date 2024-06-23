@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Math.h"
 
+class Enemy;
+
 class Player
 {
 private:
@@ -20,19 +22,19 @@ private:
 	float bulletSpeed = 10.0f; // скорость пули
 
 	sf::Vector2f direction; // направление пули
-	std::vector<sf::RectangleShape> bullets; // вектор с пулями
 	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
 
 	sf::RectangleShape boundingRectangle; // рамка для игрока
 
 public:
 	// игрок 
-	sf::Sprite getPlayerSprite();
+	sf::Sprite getPlayerSprite(); // доступ к спрайту игрока
+	sf::RectangleShape getBullet(); // доступ к пулям
 	void Initialize();
 	void Load();
 	void Update(sf::Event& event, sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
 	// пули
+	std::vector<sf::RectangleShape> bullets; // вектор с пулями
 	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
 };
-

@@ -140,7 +140,6 @@
   <ItemGroup>
     <ClInclude Include="Constans.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameRPG.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

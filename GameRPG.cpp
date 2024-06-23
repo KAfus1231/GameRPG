@@ -6,11 +6,11 @@
 int main()
 {
     // создание окна
-    sf::ContextSettings settings; 
+    sf::ContextSettings settings;
     settings.antialiasingLevel = 16; // буферизация
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "RPG", sf::Style::Default, settings);
     window.setFramerateLimit(144); // ограничение кадров
- 
+
     Player player;
     Enemy enemy;
 
@@ -19,7 +19,7 @@ int main()
 
     player.Load();
     enemy.Load();
-  
+
     while (window.isOpen())
     {
         sf::Event event; // событие
@@ -30,7 +30,7 @@ int main()
                 window.close();
             }
         }
-        
+
         window.clear(); // очистка окна
         player.Update(event, window);
         enemy.Update(player);
@@ -40,4 +40,4 @@ int main()
     }
 
     return 0;
- }
+}

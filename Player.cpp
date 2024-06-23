@@ -41,6 +41,12 @@ sf::Sprite Player::getPlayerSprite() // геттер для спрайта
     return sprite;
 }
 
+sf::RectangleShape Player::getBullet()
+{
+    if(!bullets.empty())
+        return bullets.back();
+}
+
 void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение персонажа
 {
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
