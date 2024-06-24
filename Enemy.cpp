@@ -32,23 +32,26 @@ void Enemy::Load()
         std::cout << "Somthing wrong" << std::endl;
 }
 
-void Enemy::Update(Player& player)
+void Enemy::Update(Player& player, float deltaTime)
 {
     sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition(); // направление для движения врага
     direction = Math::NormalizeVector(direction); // нормализация
-    sprite.setPosition(sprite.getPosition() + direction * bulletSpeed); // устоновка поцизии врага (бегает за игроком)
+    //sprite.setPosition(sprite.getPosition() + direction * bulletSpeed); // устоновка поцизии врага (бегает за игроком)
 
-    boundingRectangle.setPosition(sprite.getPosition());
+    boundingRectangle.setPosition(sprite.getPosition()); // рамка привязана к спрайту врага
 
-    if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений
+    if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
     {
         std::cout << "Collision detected!" << std::endl;
     }
 
-    for (int i = 0; i < player.bullets.size(); i++)
+    for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
     {
         if (sprite.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
-            boundingRectangle.setOutlineColor(sf::Color::Yellow);
+        {
+            std::cout << "PP" << std::endl;
+            boundingRectangle.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
+        }
         else
             boundingRectangle.setOutlineColor(sf::Color::Red);
     }

@@ -5,8 +5,8 @@
 void Player::Initialize()
 {
     boundingRectangle.setFillColor(sf::Color::Transparent); // контур
-    boundingRectangle.setOutlineColor(sf::Color::Blue);
-    boundingRectangle.setOutlineThickness(1);
+    boundingRectangle.setOutlineColor(sf::Color::Blue); // цвет контура 
+    boundingRectangle.setOutlineThickness(1); // толщина
 
     size = sf::Vector2i(64, 64); // размер персонажа
 }
@@ -47,7 +47,7 @@ sf::RectangleShape Player::getBullet()
         return bullets.back();
 }
 
-void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движение персонажа
+void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime)  // движение персонажа
 {
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
     float timeForBullets = clockForBullets.getElapsedTime().asSeconds(); // время с момента запуска таймера для пуль
@@ -70,7 +70,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движен
 
     for (size_t i = 0; i < bullets.size(); i++) // отрисовка стрельбы
     {
-        bullets[i].setPosition(bullets[i].getPosition() + bulletsDirection[i] * bulletSpeed); // установка поцизии пули
+        bullets[i].setPosition(bullets[i].getPosition() + bulletsDirection[i] * bulletSpeed * deltaTime); // установка поцизии пули
     }
 
     if (timeForBullets > bulletsSpeed)
@@ -115,7 +115,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движен
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        movement.y -= 3;
+        movement.y -= 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
     }
     if (isMovingDown)
@@ -123,7 +123,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движен
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        movement.y += 3;
+        movement.y += 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
     }
     if (isMovingLeft)
@@ -131,7 +131,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движен
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        movement.x -= 3;
+        movement.x -= 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
     }
     if (isMovingRight)
@@ -139,7 +139,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window)  // движен
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        movement.x += 3;
+        movement.x += 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 196, 64, 64));
     }
 
