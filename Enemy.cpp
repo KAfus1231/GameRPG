@@ -36,14 +36,17 @@ void Enemy::Update(Player& player, float deltaTime)
 {
     sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition(); // направление для движения врага
     direction = Math::NormalizeVector(direction); // нормализация
-    //sprite.setPosition(sprite.getPosition() + direction * bulletSpeed); // устоновка поцизии врага (бегает за игроком)
+    sprite.setPosition(sprite.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
 
     boundingRectangle.setPosition(sprite.getPosition()); // рамка привязана к спрайту врага
 
     if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
     {
         std::cout << "Collision detected!" << std::endl;
+        player.boundingRectangle.setOutlineColor(sf::Color::Red);
     }
+    else
+        player.boundingRectangle.setOutlineColor(sf::Color::Blue);
 
     for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
     {

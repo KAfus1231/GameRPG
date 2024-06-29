@@ -25,10 +25,10 @@ private:
 	sf::Vector2f direction; // направление пули
 	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
 
-	sf::RectangleShape boundingRectangle; // рамка для игрока
 
 public:
 	// игрок 
+	sf::RectangleShape boundingRectangle; // рамка для игрока
 	sf::Sprite getPlayerSprite(); // доступ к спрайту игрока
 	sf::RectangleShape getBullet(); // доступ к пулям
 	void Initialize();
