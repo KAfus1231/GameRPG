@@ -9,10 +9,18 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 
+	// текст над врагом
+	sf::Text healthText;
+	sf::Font healthFont;
+
 	sf::Vector2i size; // размер врага
 	sf::RectangleShape boundingRectangle; // рамка для врага
-	float EnemySpeed = 0.4f; // скорость игрока
+	float EnemySpeed = 0.4f; // скорость врага
+	int health; // здоровье
 public:
+	Enemy();
+	~Enemy();
+
 	sf::Sprite getEnemySprite();
 	void Initialize();
 	void Load();

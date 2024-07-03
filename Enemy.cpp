@@ -2,6 +2,15 @@
 #include<iostream>
 #include"Constans.h"
 
+Enemy::Enemy() : health(100)
+{
+
+}
+
+Enemy::~Enemy()
+{
+}
+
 sf::Sprite Enemy::getEnemySprite() // геттер для спрайта
 {
     return sprite;
@@ -27,6 +36,9 @@ void Enemy::Load()
 
         sprite.scale(sf::Vector2f(2.0, 2.0)); // размер скелета
         boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y)); // утсановка размера контура
+
+        healthFont.loadFromFile("assets/fonts/Arial.ttf"); // загрузка шрифта для полоски hp
+        healthText.setFont(healthFont); // установка шрифта для полоски hp
     }
     else
         std::cout << "Somthing wrong" << std::endl;
@@ -34,34 +46,49 @@ void Enemy::Load()
 
 void Enemy::Update(Player& player, float deltaTime)
 {
-    sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition(); // направление для движения врага
-    direction = Math::NormalizeVector(direction); // нормализация
-    sprite.setPosition(sprite.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
-
-    boundingRectangle.setPosition(sprite.getPosition()); // рамка привязана к спрайту врага
-
-    if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
+    if(health > 0)
     {
-        std::cout << "Collision detected!" << std::endl;
-        player.boundingRectangle.setOutlineColor(sf::Color::Red);
-    }
-    else
-        player.boundingRectangle.setOutlineColor(sf::Color::Blue);
+        sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition(); // направление для движения врага
+        direction = Math::NormalizeVector(direction); // нормализация
+        sprite.setPosition(sprite.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
 
-    for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
-    {
-        if (sprite.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
+        boundingRectangle.setPosition(sprite.getPosition()); // рамка привязана к спрайту врага
+
+        healthText.setString(std::to_string(health)); // установка полоски hp
+        healthText.setPosition(sprite.getPosition().x + // ->
+            (128 - healthText.getGlobalBounds().width) / 2, sprite.getPosition().y - healthText.getGlobalBounds().height); // установка позиции полоски hp
+
+        if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
         {
-            std::cout << "PP" << std::endl;
-            boundingRectangle.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
+            std::cout << "Collision detected!" << std::endl;
+            player.boundingRectangle.setOutlineColor(sf::Color::Red);
         }
         else
-            boundingRectangle.setOutlineColor(sf::Color::Red);
+            player.boundingRectangle.setOutlineColor(sf::Color::Blue);
+
+        for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
+        {
+            if (sprite.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
+            {
+                health -= 10;
+                std::cout << "Enemy Health is: " << health << std::endl;
+                boundingRectangle.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
+                player.bullets.erase(player.bullets.begin() + i); // удаление пули при попадании во врага
+                player.bulletsDirection.erase(player.bulletsDirection.begin() + i); // удаление направления пули при попадании во врага
+
+            }
+            else
+                boundingRectangle.setOutlineColor(sf::Color::Red);
+        }
     }
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
 {
-    window.draw(sprite);
-    window.draw(boundingRectangle);
+    if(health > 0)
+    {
+        window.draw(sprite);
+        window.draw(boundingRectangle);
+        window.draw(healthText);
+    }
 }

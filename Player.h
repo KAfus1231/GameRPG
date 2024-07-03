@@ -20,12 +20,7 @@ private:
 
 	sf::Clock clockForBullets; // таймер для пуль
 	float bulletsSpeed = 0.08f; // скорость смены кадров стрельбы
-	float bulletSpeed = 2.0f; // скорость пули
-
-	sf::Vector2f direction; // направление пули
-	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
-
-
+	float bulletSpeed = 1.0f; // скорость пули
 public:
 	// игрок 
 	sf::RectangleShape boundingRectangle; // рамка для игрока
@@ -36,6 +31,8 @@ public:
 	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime);
 	void Draw(sf::RenderWindow& window);
 	// пули
+	sf::Vector2f direction; // направление пули
+	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
 	std::vector<sf::RectangleShape> bullets; // вектор с пулями
 	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
 };
