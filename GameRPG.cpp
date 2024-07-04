@@ -2,6 +2,7 @@
 #include<iostream>
 #include<string>
 
+#include "Map.h"
 #include "Constans.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -20,9 +21,11 @@ int main()
 
     sf::Clock clock; // таймер для контроля частоты обновлений и скорости
 
+    Map map;
     Player player;
     Enemy enemy;
 
+    map.Initialize();
     player.Initialize();
     enemy.Initialize();
 
@@ -34,6 +37,7 @@ int main()
     else
         window.close();
 
+    map.Load();
     player.Load();
     enemy.Load();
 
@@ -64,9 +68,11 @@ int main()
         }
 
         window.clear(); // очистка окна
+        map.Update(deltaTime);
         player.Update(event, window, deltaTime);
         enemy.Update(player, deltaTime);
 
+        map.Draw(window);
         player.Draw(window);
         enemy.Draw(window);
 
