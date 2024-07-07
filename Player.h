@@ -21,11 +21,14 @@ private:
 	sf::Clock clockForBullets; // таймер для пуль
 	float bulletsSpeed = 0.08f; // скорость смены кадров стрельбы
 	float bulletSpeed = 1.0f; // скорость пули
+
+	sf::View view; // камера для наблюдения за игроком
 public:
 	// игрок 
 	sf::RectangleShape boundingRectangle; // рамка для игрока
 	sf::Sprite getPlayerSprite(); // доступ к спрайту игрока
 	sf::RectangleShape getBullet(); // доступ к пулям
+
 	void Initialize();
 	void Load();
 	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime);
@@ -35,4 +38,5 @@ public:
 	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
 	std::vector<sf::RectangleShape> bullets; // вектор с пулями
 	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
+	sf::View getPlayerCordinateForView(sf::Vector2f playerCordinate, sf::View view); // слежка за игроком
 };

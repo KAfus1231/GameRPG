@@ -6,8 +6,10 @@ class Enemy
 {
 private:
 	// текстура врага
+	std::vector<sf::Sprite> sprites; // вектор спрайтов врага
 	sf::Texture texture;
 	sf::Sprite sprite;
+	int spritesNumber = 0; // номер текущего спрайта в векторе
 
 	// текст над врагом
 	sf::Text healthText;
@@ -15,7 +17,12 @@ private:
 
 	sf::Vector2i size; // размер врага
 	sf::RectangleShape boundingRectangle; // рамка для врага
-	float EnemySpeed = 0.4f; // скорость врага
+
+	sf::Clock clockForAnimation; // таймер для анимаций
+	float frame = 0; // кадр врага
+	float frameSpeed = 0.2f; //скорость смены кадров анимации
+	float EnemySpeed = 0.6f; // скорость врага
+	
 	int health; // здоровье
 public:
 	Enemy();

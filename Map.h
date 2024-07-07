@@ -6,6 +6,7 @@ class Map
 private:
 	sf::Texture tileSheetTexture;
 	sf::Sprite sprite;
+	std::vector<sf::Sprite> tiles; // вектор плиток
 
 	int tileWidth; // кол-во пикселей в плитке по ширине
 	int tileHeight; // по высоте

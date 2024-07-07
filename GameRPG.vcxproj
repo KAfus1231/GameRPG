@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameRPG.cpp" />
+    <ClCompile Include="Info.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="Constans.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Info.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Player.h" />

@@ -39,6 +39,8 @@ void Enemy::Load()
 
         healthFont.loadFromFile("assets/fonts/Arial.ttf"); // загрузка шрифта для полоски hp
         healthText.setFont(healthFont); // установка шрифта для полоски hp
+
+        sprites.push_back(sprite); // добавление спрайта в вектор
     }
     else
         std::cout << "Somthing wrong" << std::endl;
@@ -46,29 +48,66 @@ void Enemy::Load()
 
 void Enemy::Update(Player& player, float deltaTime)
 {
+    float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds();
+    
+    if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
+    {
+        clockForAnimation.restart();
+    }
+
+
     if(health > 0)
     {
-        sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprite.getPosition(); // направление для движения врага
+        sf::Vector2f direction = player.getPlayerSprite().getPosition() - sprites[spritesNumber].getPosition(); // направление для движения врага
         direction = Math::NormalizeVector(direction); // нормализация
-        sprite.setPosition(sprite.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
+        /*sprites[spritesNumber].setPosition(sprites[spritesNumber].getPosition() + direction * deltaTime * EnemySpeed);*/ // устоновка поцизии врага (бегает за игроком)
+        
+        if(direction.y < 0)
+        {
+            frame += timeForAnimation;
+            if (frame > 9)
+                frame = 0;
+            sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
+        }
+        if (direction.y > 0)
+        {
+            frame += timeForAnimation;
+            if (frame > 9)
+                frame = 0;
+            sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
+        }
+        if (direction.x < 0)
+        {
+            frame += timeForAnimation;
+            if (frame > 9)
+                frame = 0;
+            sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
+        }
+        if (direction.x > 0)
+        {
+            frame += timeForAnimation;
+            if (frame > 9)
+                frame = 0;
+            sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 196, 64, 64));
+        }
 
-        boundingRectangle.setPosition(sprite.getPosition()); // рамка привязана к спрайту врага
+        boundingRectangle.setPosition(sprites[spritesNumber].getPosition()); // рамка привязана к спрайту врага
 
         healthText.setString(std::to_string(health)); // установка полоски hp
-        healthText.setPosition(sprite.getPosition().x + // ->
-            (128 - healthText.getGlobalBounds().width) / 2, sprite.getPosition().y - healthText.getGlobalBounds().height); // установка позиции полоски hp
+        healthText.setPosition(sprites[spritesNumber].getPosition().x + // ->
+            (128 - healthText.getGlobalBounds().width) / 2, sprites[spritesNumber].getPosition().y - healthText.getGlobalBounds().height); // установка позиции полоски hp
 
-        if (sprite.getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
+        if (sprites[spritesNumber].getGlobalBounds().intersects(player.getPlayerSprite().getGlobalBounds())) // обработка столкновений врага и игрока
         {
-            std::cout << "Collision detected!" << std::endl;
             player.boundingRectangle.setOutlineColor(sf::Color::Red);
         }
+
         else
             player.boundingRectangle.setOutlineColor(sf::Color::Blue);
 
         for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
         {
-            if (sprite.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
+            if (sprites[spritesNumber].getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
             {
                 health -= 10;
                 std::cout << "Enemy Health is: " << health << std::endl;
@@ -78,8 +117,24 @@ void Enemy::Update(Player& player, float deltaTime)
 
             }
             else
+            {
                 boundingRectangle.setOutlineColor(sf::Color::Red);
+            }
         }
+    }
+    else // если hp стало 0
+    {
+        health = 100;
+
+        spritesNumber += 1;
+        sprites.push_back(sprite);
+
+        if (std::rand() % 2 == 1) // случайный спавн врага
+            sprites[spritesNumber].setPosition(sf::Vector2f(std::rand() % 300, std::rand() % 1080));
+        else
+            sprites[spritesNumber].setPosition(sf::Vector2f(1920 - std::rand() % 300, rand() % 1080));
+       
+            
     }
 }
 
@@ -87,7 +142,8 @@ void Enemy::Draw(sf::RenderWindow& window)
 {
     if(health > 0)
     {
-        window.draw(sprite);
+        
+        window.draw(sprites[spritesNumber]);
         window.draw(boundingRectangle);
         window.draw(healthText);
     }

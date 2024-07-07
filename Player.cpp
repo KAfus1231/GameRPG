@@ -2,6 +2,7 @@
 #include<iostream>
 #include"Constans.h"
 
+
 void Player::Initialize()
 {
     boundingRectangle.setFillColor(sf::Color::Transparent); // контур
@@ -9,6 +10,7 @@ void Player::Initialize()
     boundingRectangle.setOutlineThickness(1); // толщина
 
     size = sf::Vector2i(64, 64); // размер персонажа
+    view.reset(sf::FloatRect(0, 0, 1920, 1080));
 }
 
 //слежка за курсором 
@@ -18,6 +20,12 @@ sf::Vector2f Player::BulletWatch(sf::RenderWindow& window)
     sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition); // преобразование 2i к 2f *не знаю нах, но пусть будет*
 
     return mousePositionWindow;
+}
+
+sf::View Player::getPlayerCordinateForView(sf::Vector2f playerCordinate, sf::View view)
+{
+    view.setCenter(playerCordinate.x, playerCordinate.y); // следим за игроком, передавая его координаты
+    return view; // возвращаем нашу камеру, что обновляет ее
 }
 
 void Player::Load() // загрузка персонажа
@@ -51,6 +59,7 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime)
 {
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
     float timeForBullets = clockForBullets.getElapsedTime().asSeconds(); // время с момента запуска таймера для пуль
+    view = getPlayerCordinateForView(sprite.getPosition(), view); // слежка за игроком
 
     // флаги для движения персонажа
     bool isMovingUp = false;
@@ -149,8 +158,10 @@ void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime)
 
 void Player::Draw(sf::RenderWindow& window)
 {
+    window.setView(view);
     window.draw(sprite);
     window.draw(boundingRectangle);
+
     for (size_t i = 0; i < bullets.size(); i++)
         window.draw(bullets[i]);
 }

@@ -11,22 +11,24 @@ Map::~Map()
 
 void Map::Initialize()
 {
+	
 }
 
 void Map::Load()
 {
+	totalTilesX = tileSheetTexture.getSize().x / tileWidth; // получаем количество плиток по x
+	totalTilesY = tileSheetTexture.getSize().y / tileHeight; // по y
+
+	std::cout << totalTilesX << " " << totalTilesY << std::endl;
+	std::cout << "Tileset load!" << std::endl;
+
 	if (tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png"))
 	{
-		totalTilesX = tileSheetTexture.getSize().x / tileWidth; // получаем количество плиток по x
-		totalTilesY = tileSheetTexture.getSize().y / tileHeight; // по y
-
-		std::cout << totalTilesX << " " << totalTilesY << std::endl;
-		std::cout << "Tileset load!" << std::endl;
-
-		sprite.setTexture(tileSheetTexture);
-		sprite.setTextureRect(sf::IntRect(2 * tileWidth, 4 * tileHeight, tileWidth, tileHeight));
-		sprite.setScale(sf::Vector2f(5, 5));
-		sprite.setPosition(sf::Vector2f(100, 100));
+		tiles.push_back(sprite);
+		tiles.front().setTexture(tileSheetTexture);
+		tiles.front().setTextureRect(sf::IntRect(tileWidth,tileHeight, tileWidth, tileHeight));
+		tiles.front().setScale(sf::Vector2f(5, 5));
+		tiles.front().setPosition(sf::Vector2f(tileWidth * 5, 0));
 	}
 	
 	else
@@ -39,5 +41,5 @@ void Map::Update(float deltaTime)
 
 void Map::Draw(sf::RenderWindow& window)
 {
-	window.draw(sprite);
+	window.draw(tiles.front());
 }
