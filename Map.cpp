@@ -22,12 +22,12 @@ void Map::Load()
 	std::cout << totalTilesX << " " << totalTilesY << std::endl;
 	std::cout << "Tileset load!" << std::endl;
 
-	if (tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png"))
+	if (tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset2.png"))
 	{
 		tiles.push_back(sprite);
 		tiles.front().setTexture(tileSheetTexture);
-		tiles.front().setTextureRect(sf::IntRect(tileWidth,tileHeight, tileWidth, tileHeight));
-		tiles.front().setScale(sf::Vector2f(5, 5));
+		/*tiles.front().setTextureRect(sf::IntRect(tileWidth,tileHeight, tileWidth, tileHeight));*/
+		tiles.front().setScale(sf::Vector2f(3, 3));
 		tiles.front().setPosition(sf::Vector2f(tileWidth * 5, 0));
 	}
 	

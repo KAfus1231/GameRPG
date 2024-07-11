@@ -7,31 +7,44 @@ class Enemy;
 class Player
 {
 private:
-	// текстура игрока
+	/*friend void Enemy::Update(Player& player, float deltaTime);*/
+	// параметры кента
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Vector2i size; // размер кента
+	float playerSpeed = 0.2f; // скорость кента
+	int health; // здоровье кента
+	int dashEnergy; // энегрия для дэша
+	bool reloadDash = false; // флаг для перезарядки дэша
 
-	sf::Vector2i size; // размер персонажа
+	// текст над игроком
+	sf::RectangleShape boundingRectangleForHP; // обводка для HP
+	sf::RectangleShape rectangleForHP; // полоска hp
+	sf::RectangleShape rectangleForDash; // полоска дэша
 
 	sf::Clock clockForAnimation; // таймер для анимаций
+	sf::Clock clockForCollision; // таймер для обработки событий при столкновении игрока и врага
+	sf::Clock clockForBullets; // таймер для пуль
+	sf::Clock clockForDash; // таймер для рывка
+
 	float frame = 0; // кадр персонажа
 	float frameSpeed = 0.2f; //скорость смены кадров анимации
-	float playerSpeed = 0.2f; // скорость кента
 
-	sf::Clock clockForBullets; // таймер для пуль
 	float bulletsSpeed = 0.08f; // скорость смены кадров стрельбы
-	float bulletSpeed = 1.0f; // скорость пули
+	float bulletSpeed = 1.5f; // скорость пули
 
 	sf::View view; // камера для наблюдения за игроком
 public:
 	// игрок 
+	Player();
+	~Player();
 	sf::RectangleShape boundingRectangle; // рамка для игрока
 	sf::Sprite getPlayerSprite(); // доступ к спрайту игрока
 	sf::RectangleShape getBullet(); // доступ к пулям
 
 	void Initialize();
 	void Load();
-	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime);
+	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy &enemy);
 	void Draw(sf::RenderWindow& window);
 	// пули
 	sf::Vector2f direction; // направление пули

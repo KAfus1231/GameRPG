@@ -34,8 +34,7 @@ void Info::Update(sf::Time deltaTimeTimer, Player& player)
         timeToFpsChange = 0;
     }
     timeToFpsChange += deltaTimeTimer.asSeconds() * 130; // вот это время 
-    std::cout << timeToFpsChange << std::endl;
-
+ 
     frameRateText.setPosition(player.getPlayerSprite().getPosition() - sf::Vector2f(960, 540));
 }
 

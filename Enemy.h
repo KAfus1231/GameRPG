@@ -12,8 +12,8 @@ private:
 	int spritesNumber = 0; // номер текущего спрайта в векторе
 
 	// текст над врагом
-	sf::Text healthText;
-	sf::Font healthFont;
+	sf::RectangleShape boundingRectangleForHP; // обводка для HP
+	sf::RectangleShape rectangleForHP; // полоска hp
 
 	sf::Vector2i size; // размер врага
 	sf::RectangleShape boundingRectangle; // рамка для врага
@@ -21,13 +21,15 @@ private:
 	sf::Clock clockForAnimation; // таймер для анимаций
 	float frame = 0; // кадр врага
 	float frameSpeed = 0.2f; //скорость смены кадров анимации
-	float EnemySpeed = 0.6f; // скорость врага
-	
+	float EnemySpeed = 0.7f; // скорость врага
+	sf::Vector2f direction; // направление врага
+
 	int health; // здоровье
 public:
 	Enemy();
 	~Enemy();
 
+	sf::Vector2f getEnemyDirection();
 	sf::Sprite getEnemySprite();
 	void Initialize();
 	void Load();
