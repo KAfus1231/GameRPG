@@ -72,7 +72,7 @@ void Enemy::Update(Player& player, float deltaTime)
     {
         direction = player.getPlayerSprite().getPosition() - sprites[spritesNumber].getPosition(); // направление для движения врага
         direction = Math::NormalizeVector(direction); // нормализация
-        sprites[spritesNumber].setPosition(sprites[spritesNumber].getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
+        /*sprites[spritesNumber].setPosition(sprites[spritesNumber].getPosition() + direction * deltaTime * EnemySpeed);*/ // устоновка поцизии врага (бегает за игроком)
         
         if(direction.y < 0)
         {

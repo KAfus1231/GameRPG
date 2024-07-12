@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 
+class Player;
+
 class Enemy
 {
 private:

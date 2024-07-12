@@ -7,7 +7,6 @@ class Enemy;
 class Player
 {
 private:
-	/*friend void Enemy::Update(Player& player, float deltaTime);*/
 	// параметры кента
 	sf::Texture texture;
 	sf::Sprite sprite;
