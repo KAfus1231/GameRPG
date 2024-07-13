@@ -34,12 +34,12 @@ void Map::Load()
 	totalTilesY = tileSheetTexture.getSize().y / tileHeight; // по y
 
 	std::cout << totalTilesX << " " << totalTilesY << std::endl;
-	std::cout << "Tileset load!" << std::endl;
 
 	try // пытаюсь загрузить текстуру
 	{
 		tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png");
 		sprite.setTexture(tileSheetTexture); // установка спрайта
+		std::cout << "Tileset load!" << std::endl;
 
 		if(!tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png"))
 			throw "void::Map::Load()"; // выкидываю ошибку

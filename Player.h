@@ -12,6 +12,7 @@ private:
 	sf::Sprite sprite;
 	sf::Vector2i size; // размер кента
 	float playerSpeed = 0.2f; // скорость кента
+	
 	int health; // здоровье кента
 	int dashEnergy; // энегрия для дэша
 	bool reloadDash = false; // флаг для перезарядки дэша
@@ -41,6 +42,13 @@ public:
 	sf::Sprite getPlayerSprite(); // доступ к спрайту игрока
 	sf::RectangleShape getBullet(); // доступ к пулям
 
+	// методы действий игрока
+	void shoot(sf::RenderWindow& window, float deltaTime); // метод стрельбы
+	void movement(sf::Event& event, float deltaTime); // метод передвижения
+	void collisions(Enemy& enemy); // метод обработки столкновений
+	void status(); // метод вывода и изменения информации над игроком
+	sf::View camera(sf::View view); // метод камеры
+
 	void Initialize();
 	void Load();
 	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy &enemy);
@@ -49,6 +57,4 @@ public:
 	sf::Vector2f direction; // направление пули
 	std::vector<sf::Vector2f> bulletsDirection; // вектор, хранящий направление пуль
 	std::vector<sf::RectangleShape> bullets; // вектор с пулями
-	sf::Vector2f BulletWatch(sf::RenderWindow& window);// слежка за курсором 
-	sf::View getPlayerCordinateForView(sf::Vector2f playerCordinate, sf::View view); // слежка за игроком
 };

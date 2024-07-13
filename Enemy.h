@@ -31,6 +31,12 @@ public:
 	Enemy();
 	~Enemy();
 
+	// методы действий врага
+	void movement(Player & player, float deltaTime); // метод движения врага
+	void collisions(Player& player); // метод обработки столкновений
+	void status(); // метод вывода информации над врагом
+	void death(); // метод обработки смерти одного из врагов
+
 	sf::Vector2f getEnemyDirection();
 	sf::Sprite getEnemySprite();
 	void Initialize();
