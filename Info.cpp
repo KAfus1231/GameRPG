@@ -35,7 +35,7 @@ void Info::Update(sf::Time deltaTimeTimer, Player& player)
     }
     timeToFpsChange += deltaTimeTimer.asSeconds() * 130; // вот это время 
  
-    frameRateText.setPosition(player.getPlayerSprite().getPosition() - sf::Vector2f(960, 540));
+    frameRateText.setPosition(player.getHitbox().getPosition() - sf::Vector2f(960, 540));
 }
 
 void Info::Draw(sf::RenderWindow &window)

@@ -16,9 +16,10 @@ Player::~Player()
 void Player::Initialize()
 {
     // хитбокс
-    boundingRectangle.setFillColor(sf::Color::Transparent); // контур
-    boundingRectangle.setOutlineColor(sf::Color::Blue); // цвет контура 
-    boundingRectangle.setOutlineThickness(1); // толщина
+    hitbox.setFillColor(sf::Color::Transparent); // контур
+    hitbox.setOutlineColor(sf::Color::Blue); // цвет контура 
+    hitbox.setOutlineThickness(1); // толщина
+    hitbox.setSize(sf::Vector2f(70, 100)); // размер хитбокса
 
     // рамка для hp
     boundingRectangleForHP.setFillColor(sf::Color::Transparent); 
@@ -47,11 +48,10 @@ void Player::Load() // загрузка персонажа
 
         sprite.setTexture(texture);// передача в спрайт текстуры игрока
         sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y)); // выбор текстуры игрока
-        sprite.setPosition(sf::Vector2f(1650, 800));
+        hitbox.setPosition(sf::Vector2f(1500, 1000));
 
         sprite.scale(sf::Vector2f(2.0, 2.0)); // размер персонажа
-        boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y)); // утсановка размера контура
-
+        
         if (!(texture.loadFromFile("Assets/Player/Textures/spritesheet.png")))
             throw "void Player::Load()";
     }
@@ -72,10 +72,10 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timeForBullets > bulletsSpeed) // утановка позиции пули
     {
         bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // добавление новой пули в вектор
-        bullets[bullets.size() - 1].setPosition(sprite.getPosition() + sf::Vector2f(80, 64));
-        direction = mousePositionWindow - bullets[bullets.size() - 1].getPosition(); // направление выстрела
-        direction = Math::NormalizeVector(direction); // нормализация вектора
-        bulletsDirection.push_back(direction); // добавление в вектор позиции курсора
+        bullets[bullets.size() - 1].setPosition(hitbox.getPosition() + sf::Vector2f(35, 50));
+        bulletDirection = mousePositionWindow - bullets[bullets.size() - 1].getPosition(); // направление выстрела
+        bulletDirection = Math::NormalizeVector(bulletDirection); // нормализация вектора
+        bulletsDirection.push_back(bulletDirection); // добавление в вектор позиции курсора
     }
 
     for (size_t i = 0; i < bullets.size(); i++) // отрисовка стрельбы
@@ -89,30 +89,44 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
 // метод передвижения 
 void Player::movement(sf::Event& event, float deltaTime)
 {
-    sf::Vector2f movement(0, 0);
+    sf::Vector2f movement(0, 0); // вектор нормали
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
+    sprite.setPosition(hitbox.getPosition().x + // ->
+        (70 - sprite.getGlobalBounds().width) / 2, hitbox.getPosition().y - sprite.getGlobalBounds().height + 100);
 
     // флаги для движения персонажа
-    bool isMovingUp = false;
-    bool isMovingLeft = false;
-    bool isMovingDown = false;
-    bool isMovingRight = false;
+    isMovingUp = false;
+    isMovingLeft = false;
+    isMovingDown = false;
+    isMovingRight = false;
 
     // управление персонажем
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
         isMovingUp = true;
+        isMovingDown = false;
+    }
     else
         isMovingUp = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
         isMovingDown = true;
+        isMovingUp = false;
+    }
     else
         isMovingDown = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
         isMovingLeft = true;
+        isMovingRight = false;
+    }
     else
         isMovingLeft = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
         isMovingRight = true;
+        isMovingLeft = false;
+    }
     else
         isMovingRight = false;
 
@@ -131,7 +145,7 @@ void Player::movement(sf::Event& event, float deltaTime)
     if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
         clockForAnimation.restart();
 
-    if (isMovingUp)
+    if (isMovingUp) // движение вверх
     {
         frame += timeForAnimation;
         if (frame > 9)
@@ -139,7 +153,7 @@ void Player::movement(sf::Event& event, float deltaTime)
         movement.y -= 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
     }
-    if (isMovingDown)
+    if (isMovingDown) // движение вниз
     {
         frame += timeForAnimation;
         if (frame > 9)
@@ -147,7 +161,7 @@ void Player::movement(sf::Event& event, float deltaTime)
         movement.y += 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
     }
-    if (isMovingLeft)
+    if (isMovingLeft) // движение влево
     {
         frame += timeForAnimation;
         if (frame > 9)
@@ -155,7 +169,7 @@ void Player::movement(sf::Event& event, float deltaTime)
         movement.x -= 3 * playerSpeed * deltaTime;
         sprite.setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
     }
-    if (isMovingRight)
+    if (isMovingRight) // движение вправо
     {
         frame += timeForAnimation;
         if (frame > 9)
@@ -165,7 +179,7 @@ void Player::movement(sf::Event& event, float deltaTime)
     }
 
     //---------------------------------------------ДЭШ-----------------------------------------------
-    bool isDash = false;
+    isDash = false;
     float timerForDash = clockForDash.getElapsedTime().asSeconds();
 
     if (dashEnergy == 0)
@@ -177,10 +191,8 @@ void Player::movement(sf::Event& event, float deltaTime)
     else if (reloadDash && dashEnergy == 100)
         reloadDash = false;
 
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !reloadDash) // дэш по нажатия на SHift
-    {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && !reloadDash) // дэш по нажатии на SHift
         isDash = true;
-    }
     else
         isDash == false;
 
@@ -217,73 +229,118 @@ void Player::movement(sf::Event& event, float deltaTime)
         dashEnergy += 1;
         rectangleForDash.setSize(rectangleForDash.getSize() + sf::Vector2f(0.76, 0));
     }
-    sprite.move(movement); // движение игрока
+    hitbox.move(movement); // движение игрока
 }
 // метод обработки столкновений
-void Player::collisions(Enemy& enemy)
+void Player::collisions(Enemy& enemy, Map& map, float deltaTime)
 {
     float timeForCollision = clockForCollision.getElapsedTime().asSeconds(); // таймер для столкновений
-    
+    float bounceForce = isDash ? 4.0f : 2.0f;
+    bool isCollision = false;
+
     if (timeForCollision >= 0.7)
         clockForCollision.restart();
-    //столкновение игрока и врага
-    if (sprite.getGlobalBounds().intersects(enemy.getEnemySprite().getGlobalBounds()))
-    {
-        health -= 10;
-        if (enemy.getEnemyDirection().x > 0) // удар слева
-            sprite.setPosition(sprite.getPosition() + sf::Vector2f(100, 0));
 
-        if (enemy.getEnemyDirection().x < 0) // удар справа
-            sprite.setPosition(sprite.getPosition() - sf::Vector2f(100, 0));
+    for (const auto& mapObject : map.mapObjects) {
 
-        if (enemy.getEnemyDirection().y > 0) // удар сверху
-            sprite.setPosition(sprite.getPosition() + sf::Vector2f(0, 100));
+        //столкновение игрока и врага  
+        playerDirection = sf::Vector2f(0, 0); // направление игрока по умолчанию равно 0       
 
-        if (enemy.getEnemyDirection().x > 0) // удар снизу
-            sprite.setPosition(sprite.getPosition() - sf::Vector2f(0, 100));
-
-        if (timeForCollision < 0.7)
+        if (hitbox.getGlobalBounds().intersects(enemy.getEnemySprite().getGlobalBounds()))
         {
-            sprite.setColor(sf::Color::Red);
-            boundingRectangle.setOutlineColor(sf::Color::Red);
+            health -= 10;
+            hitbox.move(enemy.getEnemyDirection() * deltaTime * bounceForce * 6.0f);
+            /*enemy.discardEnemy(deltaTime, bounceForce);*/
+            isCollision = true;
+            if (timeForCollision < 0.7)
+            {
+                sprite.setColor(sf::Color::Red);
+                hitbox.setOutlineColor(sf::Color::Red);
+            }
+
+            rectangleForHP.setSize(rectangleForHP.getSize() - sf::Vector2f(7.6, 0)); // уменьшение полоски hp при попадании 
         }
-        rectangleForHP.setSize(rectangleForHP.getSize() - sf::Vector2f(7.6, 0)); // уменьшение полоски hp при попадании 
-    }
-    else if (timeForCollision >= 0.7)
-    {
-        sprite.setColor(sf::Color::White);
-        boundingRectangle.setOutlineColor(sf::Color::Blue);
+
+        if (timeForCollision >= 0.7)
+        {
+            sprite.setColor(sf::Color::White);
+            hitbox.setOutlineColor(sf::Color::Blue);
+        }
+
+        //столкновение игрока с объектами карты
+        if (hitbox.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
+        {
+            playerDirection = hitbox.getPosition() - mapObject.getPosition(); // вектор столкновения игрока и объекта
+            playerDirection = Math::NormalizeVector(playerDirection); // нормализация вектора столкновения
+            
+            if (isCollision)
+            {
+                hitbox.move(-enemy.getEnemyDirection().x * bounceForce * deltaTime * 14.0f, -enemy.getEnemyDirection().y * bounceForce * deltaTime * 14.0f);
+                enemy.getEnemyHitbox().move(-enemy.getEnemyDirection() * deltaTime * bounceForce * 12.0f);
+            }
+            
+            hitbox.move(playerDirection.x * bounceForce * deltaTime, playerDirection.y * bounceForce * deltaTime);
+        }
+
+        // столкновение пули с объектами карты
+        for (const auto& bullet: bullets)
+        {
+            if (bullet.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
+            {
+                bullets.erase(bullets.begin());
+                bulletsDirection.erase(bulletsDirection.begin());
+            }
+        }
     }
 }
+// измерение скорости персонажа
+sf::Vector2f Player::getPlayerSpeed(float deltaTime)
+{
+    sf::Vector2f currentPosition = hitbox.getPosition();
+    
+    if (clockForSpeed.getElapsedTime().asSeconds() >= 0.1f)
+    {
+        sf::Vector2f speed = (currentPosition - previousPosition) / deltaTime;
+
+        previousPosition = currentPosition;
+
+        clockForSpeed.restart();
+
+        return sf::Vector2f(std::abs(speed.x), std::abs(speed.y));
+    }
+    else
+        return sf::Vector2f(0, 0);
+        
+}
+
 // метода камеры
 sf::View Player::camera(sf::View view)
 {
-    view.setCenter(sprite.getPosition().x, sprite.getPosition().y);
+    view.setCenter(hitbox.getPosition().x, hitbox.getPosition().y);
     return view;
 }
 // статус игрока
 void Player::status()
 {
-    boundingRectangle.setPosition(sprite.getPosition()); // установка поции рамки
     // позиция рамки для hp
     boundingRectangleForHP.setPosition(sprite.getPosition().x + // ->
-        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
+        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height + 10);
     // позиция полоски hp
     rectangleForHP.setPosition(sprite.getPosition().x + // ->
-        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
+        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height + 10);
     // позиция рамки дэша
     rectangleForDash.setPosition(sprite.getPosition().x + // ->
-        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - rectangleForDash.getGlobalBounds().height + 6);
+        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height + 24);
 }
 
-void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy &enemy)  // обновление персонажа
+void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy& enemy, Map& map)  // обновление персонажа
 {
     if (health > 0)
     {
         view = camera(view);
         shoot(window, deltaTime);
+        collisions(enemy, map, deltaTime);
         movement(event, deltaTime);
-        collisions(enemy);
         status();
     }
 }
@@ -294,7 +351,7 @@ void Player::Draw(sf::RenderWindow& window)
     {
         window.setView(view);
         window.draw(sprite);
-        window.draw(boundingRectangle);
+        window.draw(hitbox);
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
 
@@ -317,4 +374,9 @@ sf::RectangleShape Player::getBullet()
 {
     if(!bullets.empty())
         return bullets.back();
+}
+
+sf::RectangleShape Player::getHitbox()
+{
+    return hitbox;
 }

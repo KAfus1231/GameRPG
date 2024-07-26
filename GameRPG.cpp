@@ -53,8 +53,8 @@ int main()
         window.clear(); // очистка окна
         info.Update(deltaTimeTimer, player);
         map.Update(deltaTime);
-        player.Update(event, window, deltaTime, enemy);
-        enemy.Update(player, deltaTime);
+        player.Update(event, window, deltaTime, enemy, map);
+        enemy.Update(player, deltaTime, map);
 
         map.Draw(window);
         player.Draw(window);

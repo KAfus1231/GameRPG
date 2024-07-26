@@ -13,15 +13,15 @@ void Map::Initialize() // карта
 {
 	mapPlan[0] =  "IIIIIIIIIIIIIIIIIIIIIIIII";
 	mapPlan[1] =  "I00000000000000000000000I";
-	mapPlan[2] =  "I00000000000000000000000I";
-	mapPlan[3] =  "I00000000000000I00000000I";
-	mapPlan[4] =  "I00000000000000000000000I";
-	mapPlan[5] =  "I00000000000000000000000I";
-	mapPlan[6] =  "I00000000000000000000000I";
-	mapPlan[7] =  "I00000000000000000000000I";
-	mapPlan[8] =  "I00000000000000000000000I";
-	mapPlan[9] =  "I00000000000000000000000I";
-	mapPlan[10] = "I00000000000000000000000I";
+	mapPlan[2] =  "I00000I00000000000000000I";
+	mapPlan[3] =  "I00000I0000000000I000000I";
+	mapPlan[4] =  "I0000000000000000I000000I";
+	mapPlan[5] =  "I000000I0000000000000000I";
+	mapPlan[6] =  "I000000I0000000000000000I";
+	mapPlan[7] =  "I000000000000000000I0000I";
+	mapPlan[8] =  "I000000000000000000I0000I";
+	mapPlan[9] =  "I00000000000I00000000000I";
+	mapPlan[10] = "I00000000000I00000000000I";
 	mapPlan[11] = "I00000000000000000000000I";
 	mapPlan[12] = "I00000000000000000000000I";
 	mapPlan[13] = "I00000000000000000000000I";
@@ -64,6 +64,7 @@ void Map::Load()
 				sprite.setScale(sf::Vector2f(5, 5));
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				tiles.push_back(sprite);
+				mapObjects.push_back(sprite); // если встречается стена, то кидаем ее в вектор с объектами карты
 				break;
 			}
 }

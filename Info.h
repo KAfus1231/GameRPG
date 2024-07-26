@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 
+class Plaeyr;
+
 class Info
 {
 private:

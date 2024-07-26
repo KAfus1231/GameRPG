@@ -14,9 +14,9 @@ Enemy::~Enemy()
 
 void Enemy::Initialize() {
     // хитбокс
-    boundingRectangle.setFillColor(sf::Color::Transparent); // контур
-    boundingRectangle.setOutlineColor(sf::Color::Red); // цвет контура
-    boundingRectangle.setOutlineThickness(1); // толщина контура
+    hitbox.setFillColor(sf::Color::Transparent); // контур
+    hitbox.setOutlineColor(sf::Color::Red); // цвет контура
+    hitbox.setOutlineThickness(1); // толщина контура
 
     // рамка для hp
     boundingRectangleForHP.setFillColor(sf::Color::Transparent);
@@ -40,10 +40,10 @@ void Enemy::Load()
 
         sprite.setTexture(texture);// врага
         sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y)); // выбор текстуры врага
-        sprite.setPosition(sf::Vector2f(400, 700)); // позиция врага
 
         sprite.scale(sf::Vector2f(2.0, 2.0)); // размер скелета
-        boundingRectangle.setSize(sf::Vector2f(size.x * sprite.getScale().x, size.y * sprite.getScale().y)); // утсановка размера контура
+        hitbox.setSize(sf::Vector2f(70, 100)); // утсановка размера контура
+        hitbox.setPosition(sf::Vector2f(400, 700));
 
         sprites.push_back(sprite); // добавление спрайта в вектор
 
@@ -60,9 +60,13 @@ void Enemy::Load()
 void Enemy::movement(Player& player, float deltaTime)
 {
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // таймер для смены анимаций
-    direction = player.getPlayerSprite().getPosition() - sprites[spritesNumber].getPosition(); // направление для движения врага
+
+    direction = player.getHitbox().getPosition() - hitbox.getPosition(); // направление для движения врага
     direction = Math::NormalizeVector(direction); // нормализация
-    /*sprites[spritesNumber].setPosition(sprites[spritesNumber].getPosition() + direction * deltaTime * EnemySpeed);*/ // устоновка поцизии врага (бегает за игроком)
+
+    hitbox.setPosition(hitbox.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
+    sprites[spritesNumber].setPosition(hitbox.getPosition().x + // ->
+        (70 - sprites[spritesNumber].getGlobalBounds().width) / 2, hitbox.getPosition().y - sprites[spritesNumber].getGlobalBounds().height + 100);
 
     if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
         clockForAnimation.restart();
@@ -97,26 +101,39 @@ void Enemy::movement(Player& player, float deltaTime)
     }
 }
 // метод обработки столкновений
-void Enemy::collisions(Player& player)
+void Enemy::collisions(Player& player, Map & map, float deltaTime)
 {
+    // попадание пули во врага
     for (int i = 0; i < player.bullets.size(); i++) // обработка столкновений пуль и врага
     {
-        if (sprites[spritesNumber].getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
+        if (hitbox.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
         {
             health -= 10;
-            boundingRectangle.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
+            hitbox.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
             player.bullets.erase(player.bullets.begin() + i); // удаление пули при попадании во врага
             player.bulletsDirection.erase(player.bulletsDirection.begin() + i); // удаление направления пули при попадании во врага
             rectangleForHP.setSize(rectangleForHP.getSize() - sf::Vector2f(7.6, 0)); // уменьшение полоски hp при попадании 
         }
         else
-            boundingRectangle.setOutlineColor(sf::Color::Red);
+            hitbox.setOutlineColor(sf::Color::Red);
     }
+
+    // столкновение с объектами карты
+    for (size_t i = 0; i < map.mapObjects.size(); i++)
+    {
+        if (hitbox.getGlobalBounds().intersects(map.mapObjects[i].getGlobalBounds()))
+        {
+            collisionDirection = hitbox.getPosition() - map.mapObjects[i].getPosition();
+            collisionDirection = Math::NormalizeVector(collisionDirection);
+
+            hitbox.move(collisionDirection.x * 8, collisionDirection.y * 8);
+        }
+    }
+
 }
 // метод вывода информации над врагом
 void Enemy::status()
 {
-    boundingRectangle.setPosition(sprites[spritesNumber].getPosition()); // рамка привязана к спрайту врага
     // позиция рамки для hp
     boundingRectangleForHP.setPosition(sprites[spritesNumber].getPosition().x + // ->
         (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprites[spritesNumber].getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
@@ -132,18 +149,35 @@ void Enemy::death()
     spritesNumber += 1; // переход к следующему спрайту
     sprites.push_back(sprite);
 
-    if (std::rand() % 2 == 1) // случайный спавн врага
-        sprites[spritesNumber].setPosition(sf::Vector2f(std::rand() % 300, std::rand() % 1080));
-    else
-        sprites[spritesNumber].setPosition(sf::Vector2f(1920 - std::rand() % 300, rand() % 1080));
+    int spawn = std::rand() % 4;
+    switch (spawn)
+    {
+    case 0: 
+        hitbox.setPosition(sf::Vector2f(170, 170)); 
+        break;
+    case 1: 
+        hitbox.setPosition(sf::Vector2f(170, 1000));
+        break;
+    case 2:
+        hitbox.setPosition(sf::Vector2f(1800, 170)); 
+        break;
+    case 3: 
+        hitbox.setPosition(sf::Vector2f(1800, 1000));
+        break;
+    }
+}
+// отбрасывание врага при столкновении
+void Enemy::discardEnemy(float deltaTime, float bounceForce)
+{
+    hitbox.move(-direction * deltaTime * bounceForce * 3.0f);
 }
 
-void Enemy::Update(Player& player, float deltaTime)
+void Enemy::Update(Player& player, float deltaTime, Map& map)
 {
     if(health > 0)
     {
         movement(player, deltaTime);
-        collisions(player);
+        collisions(player, map, deltaTime);
         status();
     }
     else // если hp стало 0
@@ -157,7 +191,7 @@ void Enemy::Draw(sf::RenderWindow& window)
     if(health > 0)
     {
         window.draw(sprites[spritesNumber]);
-        window.draw(boundingRectangle);
+        window.draw(hitbox);
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
     }
@@ -171,4 +205,9 @@ sf::Vector2f Enemy::getEnemyDirection()
 sf::Sprite Enemy::getEnemySprite() // геттер для спрайта
 {
     return sprites[spritesNumber];
+}
+
+sf::RectangleShape Enemy::getEnemyHitbox()
+{
+    return hitbox;
 }
