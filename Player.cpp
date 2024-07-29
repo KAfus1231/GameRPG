@@ -249,7 +249,7 @@ void Player::collisions(Enemy& enemy, Map& map, float deltaTime)
         if (hitbox.getGlobalBounds().intersects(enemy.getEnemySprite().getGlobalBounds()))
         {
             health -= 10;
-            hitbox.move(enemy.getEnemyDirection() * deltaTime * bounceForce * 6.0f);
+            hitbox.move(enemy.getEnemyDirection() * deltaTime * bounceForce * 5.0f);
             /*enemy.discardEnemy(deltaTime, bounceForce);*/
             isCollision = true;
             if (timeForCollision < 0.7)
@@ -276,7 +276,7 @@ void Player::collisions(Enemy& enemy, Map& map, float deltaTime)
             if (isCollision)
             {
                 hitbox.move(-enemy.getEnemyDirection().x * bounceForce * deltaTime * 14.0f, -enemy.getEnemyDirection().y * bounceForce * deltaTime * 14.0f);
-                enemy.getEnemyHitbox().move(-enemy.getEnemyDirection() * deltaTime * bounceForce * 12.0f);
+                enemy.discardEnemy(deltaTime, bounceForce);
             }
             
             hitbox.move(playerDirection.x * bounceForce * deltaTime, playerDirection.y * bounceForce * deltaTime);

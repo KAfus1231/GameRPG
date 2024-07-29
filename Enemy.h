@@ -13,6 +13,20 @@ private:
 	std::vector<sf::Sprite> sprites; // вектор спрайтов врага
 	sf::Texture texture;
 	sf::Sprite sprite;
+
+	sf::Texture textureForDeath;
+	sf::Sprite spriteForDeath;
+
+	bool isDead = false;
+	float frameDeathSpeed = 120.0f;
+	int currentDeathFrame = 0;
+	float deathAnimationTime = 0.0f;
+
+	sf::Vector2f deathPosition;
+
+
+	float frame = 0; // кадр врага
+	float frameSpeed = 0.2f; //скорость смены кадров анимации
 	int spritesNumber = 0; // номер текущего спрайта в векторе
 
 	// текст над врагом
@@ -22,13 +36,12 @@ private:
 	sf::Vector2i size; // размер врага
 	sf::RectangleShape hitbox; // рамка для врага
 
-	sf::Clock clockForAnimation; // таймер для анимаций
-	float frame = 0; // кадр врага
-	float frameSpeed = 0.2f; //скорость смены кадров анимации
 	float EnemySpeed = 0.7f; // скорость врага
 	sf::Vector2f direction; // направление врага
 	sf::Vector2f collisionDirection; // направления столкновения
 
+	sf::Clock clockForAnimation; // таймер для анимаций
+	
 	int health; // здоровье
 public:
 	Enemy();
@@ -40,6 +53,7 @@ public:
 	void status(); // метод вывода информации над врагом
 	void death(); // метод обработки смерти одного из врагов
 	void discardEnemy(float deltaTime, float bounceForce); // отбрасывание врага при столкновении
+	void enemyDeathAnimation(float deltaTime);
 
 	sf::Vector2f getEnemyDirection();
 	sf::Sprite getEnemySprite();

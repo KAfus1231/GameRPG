@@ -29,7 +29,7 @@ int main()
     player.Initialize();
     enemy.Initialize();
 
-    
+
     info.Load();
     map.Load();
     player.Load();
