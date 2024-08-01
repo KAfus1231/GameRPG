@@ -5,7 +5,7 @@
 
 Enemy::Enemy() : health(100)
 {
-
+    Initialize();
 }
 
 Enemy::~Enemy()
@@ -36,7 +36,9 @@ void Enemy::Load()
 {
     try
     {
-        texture.loadFromFile("Assets/Enemy/Textures/spritesheetEnemy.png"); // загрузка текстурки
+        if (!(texture.loadFromFile("Assets/Enemy/Textures/spritesheetEnemy.png")))
+            throw "void Enemy::Load()";
+
         textureForDeath.loadFromFile("Assets/Enemy/Textures/enemyDeath.png"); // текстурка для гибели
 
         std::cout << "enemy loaded" << std::endl;
@@ -50,12 +52,15 @@ void Enemy::Load()
         sprite.scale(sf::Vector2f(2.0, 2.0)); // размер скелета
 
         hitbox.setSize(sf::Vector2f(70, 100)); // утсановка размера контура
-        hitbox.setPosition(sf::Vector2f(400, 700));
 
-        sprites.push_back(sprite); // добавление спрайта в вектор
-
-        if (!(texture.loadFromFile("Assets/Enemy/Textures/spritesheetEnemy.png")))
-            throw "void Enemy::Load()";
+        int spawn = std::rand() % 4; // установка случайной пизиции для врага
+        switch (spawn)
+        {
+        case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
+        case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
+        case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
+        case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
+        }
     }
     catch(const char* errMsg)
     {
@@ -71,9 +76,9 @@ void Enemy::movement(Player& player, float deltaTime)
     direction = player.getHitbox().getPosition() - hitbox.getPosition(); // направление для движения врага
     direction = Math::NormalizeVector(direction); // нормализация
 
-    /*hitbox.setPosition(hitbox.getPosition() + direction * deltaTime * EnemySpeed);*/ // устоновка поцизии врага (бегает за игроком)
-    sprites[spritesNumber].setPosition(hitbox.getPosition().x + // ->
-        (70 - sprites[spritesNumber].getGlobalBounds().width) / 2, hitbox.getPosition().y - sprites[spritesNumber].getGlobalBounds().height + 100);
+    hitbox.setPosition(hitbox.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
+    sprite.setPosition(hitbox.getPosition().x + // ->
+        (70 - sprite.getGlobalBounds().width) / 2, hitbox.getPosition().y - sprite.getGlobalBounds().height + 100);
 
     if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
         clockForAnimation.restart();
@@ -83,28 +88,28 @@ void Enemy::movement(Player& player, float deltaTime)
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
+        sprite.setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
     }
     if (direction.y > 0)
     {
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
+        sprite.setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
     }
     if (direction.x < 0)
     {
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
+        sprite.setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
     }
     if (direction.x > 0)
     {
         frame += timeForAnimation;
         if (frame > 9)
             frame = 0;
-        sprites[spritesNumber].setTextureRect(sf::IntRect(64 * int(frame), 196, 64, 64));
+        sprite.setTextureRect(sf::IntRect(64 * int(frame), 196, 64, 64));
     }
 }
 // метод обработки столкновений
@@ -116,6 +121,7 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
         if (hitbox.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
         {
             health -= 10;
+            std::cout << health << std::endl;
             hitbox.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
             player.bullets.erase(player.bullets.begin() + i); // удаление пули при попадании во врага
             player.bulletsDirection.erase(player.bulletsDirection.begin() + i); // удаление направления пули при попадании во врага
@@ -142,39 +148,23 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
 void Enemy::status()
 {
     // позиция рамки для hp
-    boundingRectangleForHP.setPosition(sprites[spritesNumber].getPosition().x + // ->
-        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprites[spritesNumber].getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
+    boundingRectangleForHP.setPosition(sprite.getPosition().x + // ->
+        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
     // позиция полоски hp
-    rectangleForHP.setPosition(sprites[spritesNumber].getPosition().x + // ->
-        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprites[spritesNumber].getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
+    rectangleForHP.setPosition(sprite.getPosition().x + // ->
+        (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height);
 }
 // метод обработки смерти врага
 void Enemy::death()
 {
     isDead = true;
-    deathPosition = sprites[spritesNumber].getPosition();
-
-    health = 100; // hp снова 100
-    rectangleForHP.setSize(sf::Vector2f(76, 10)); // размер полоски hp снова полный
-    spritesNumber += 1; // переход к следующему спрайту
-    sprites.push_back(sprite);
-
-    int spawn = std::rand() % 4;
-    switch (spawn)
-    {
-    case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
-    case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
-    case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
-    case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
-    }
-    currentDeathFrame = 0;
-    deathAnimationTime = 0.0f;
+    deathPosition = sprite.getPosition(); // позиция проигрывания анимации смерти
 }
 // анимация смерти врага
 void Enemy::enemyDeathAnimation(float deltaTime)
 {
     spriteForDeath.setPosition(deathPosition);
-
+    
     deathAnimationTime += deltaTime;
 
     if (deathAnimationTime > frameDeathSpeed)
@@ -185,8 +175,9 @@ void Enemy::enemyDeathAnimation(float deltaTime)
 
     if (currentDeathFrame >= 6)
     {
-        currentDeathFrame = 0;
-        isDead = false;
+        deathAnimationComplete = true;
+        std::cout << deathAnimationComplete << std::endl;
+        return;
     }
 
     spriteForDeath.setTextureRect(sf::IntRect(64 * int(currentDeathFrame), 0, 64, 64));
@@ -203,10 +194,8 @@ void Enemy::Update(Player& player, float deltaTime, Map& map)
     else
     {
         death();
-    }
-    if (isDead)
-    {
-        enemyDeathAnimation(deltaTime);
+        if(!deathAnimationComplete)
+            enemyDeathAnimation(deltaTime);
     }
 }
 
@@ -214,12 +203,12 @@ void Enemy::Draw(sf::RenderWindow& window)
 {
     if(health > 0)
     {
-        window.draw(sprites[spritesNumber]);
+        window.draw(sprite);
         window.draw(hitbox);
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
     }
-    if (isDead)
+    else if(!deathAnimationComplete)
         window.draw(spriteForDeath);
 }
 
@@ -236,10 +225,15 @@ void Enemy::discardEnemy(float deltaTime, float bounceForce)
 
 sf::Sprite Enemy::getEnemySprite() // геттер для спрайта
 {
-    return sprites[spritesNumber];
+    return sprite;
 }
 
 sf::RectangleShape Enemy::getEnemyHitbox()
 {
     return hitbox;
+}
+
+bool Enemy::getEnemyIsDead()
+{
+    return isDead;
 }

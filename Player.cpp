@@ -232,7 +232,7 @@ void Player::movement(sf::Event& event, float deltaTime)
     hitbox.move(movement); // движение игрока
 }
 // метод обработки столкновений
-void Player::collisions(Enemy& enemy, Map& map, float deltaTime)
+void Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
 {
     float timeForCollision = clockForCollision.getElapsedTime().asSeconds(); // таймер для столкновений
     float bounceForce = isDash ? 4.0f : 2.0f;
@@ -242,44 +242,46 @@ void Player::collisions(Enemy& enemy, Map& map, float deltaTime)
         clockForCollision.restart();
 
     for (const auto& mapObject : map.mapObjects) {
-
-        //столкновение игрока и врага  
-        playerDirection = sf::Vector2f(0, 0); // направление игрока по умолчанию равно 0       
-
-        if (hitbox.getGlobalBounds().intersects(enemy.getEnemySprite().getGlobalBounds()))
+        for(size_t i = 0; i < enemies.size(); i ++)
         {
-            health -= 10;
-            hitbox.move(enemy.getEnemyDirection() * deltaTime * bounceForce * 5.0f);
-            /*enemy.discardEnemy(deltaTime, bounceForce);*/
-            isCollision = true;
-            if (timeForCollision < 0.7)
+            //столкновение игрока и врага  
+            playerDirection = sf::Vector2f(0, 0); // направление игрока по умолчанию равно 0       
+
+            if (hitbox.getGlobalBounds().intersects(enemies[i].getEnemySprite().getGlobalBounds()) && !enemies[i].getEnemyIsDead())
             {
-                sprite.setColor(sf::Color::Red);
-                hitbox.setOutlineColor(sf::Color::Red);
+                /*health -= 10;*/
+                hitbox.move(enemies[i].getEnemyDirection() * deltaTime * bounceForce * 5.0f);
+                /*enemy.discardEnemy(deltaTime, bounceForce);*/
+                isCollision = true;
+                if (timeForCollision < 0.7)
+                {
+                    sprite.setColor(sf::Color::Red);
+                    hitbox.setOutlineColor(sf::Color::Red);
+                }
+
+                rectangleForHP.setSize(rectangleForHP.getSize() - sf::Vector2f(7.6, 0)); // уменьшение полоски hp при попадании 
             }
 
-            rectangleForHP.setSize(rectangleForHP.getSize() - sf::Vector2f(7.6, 0)); // уменьшение полоски hp при попадании 
-        }
-
-        if (timeForCollision >= 0.7)
-        {
-            sprite.setColor(sf::Color::White);
-            hitbox.setOutlineColor(sf::Color::Blue);
-        }
-
-        //столкновение игрока с объектами карты
-        if (hitbox.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
-        {
-            playerDirection = hitbox.getPosition() - mapObject.getPosition(); // вектор столкновения игрока и объекта
-            playerDirection = Math::NormalizeVector(playerDirection); // нормализация вектора столкновения
-            
-            if (isCollision)
+            if (timeForCollision >= 0.7)
             {
-                hitbox.move(-enemy.getEnemyDirection().x * bounceForce * deltaTime * 14.0f, -enemy.getEnemyDirection().y * bounceForce * deltaTime * 14.0f);
-                enemy.discardEnemy(deltaTime, bounceForce);
+                sprite.setColor(sf::Color::White);
+                hitbox.setOutlineColor(sf::Color::Blue);
             }
-            
-            hitbox.move(playerDirection.x * bounceForce * deltaTime, playerDirection.y * bounceForce * deltaTime);
+
+            //столкновение игрока с объектами карты
+            if (hitbox.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
+            {
+                playerDirection = hitbox.getPosition() - mapObject.getPosition(); // вектор столкновения игрока и объекта
+                playerDirection = Math::NormalizeVector(playerDirection); // нормализация вектора столкновения
+
+                if (isCollision)
+                {
+                    hitbox.move(-enemies[i].getEnemyDirection().x * bounceForce * deltaTime * 14.0f, -enemies[i].getEnemyDirection().y * bounceForce * deltaTime * 14.0f);
+                    enemies[i].discardEnemy(deltaTime, bounceForce);
+                }
+
+                hitbox.move(playerDirection.x * bounceForce * deltaTime, playerDirection.y * bounceForce * deltaTime);
+            }
         }
 
         // столкновение пули с объектами карты
@@ -333,13 +335,13 @@ void Player::status()
         (128 - boundingRectangleForHP.getGlobalBounds().width) / 2, sprite.getPosition().y - boundingRectangleForHP.getGlobalBounds().height + 24);
 }
 
-void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy& enemy, Map& map)  // обновление персонажа
+void Player::Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, std::vector<Enemy>& enemies, Map& map)  // обновление персонажа
 {
     if (health > 0)
     {
         view = camera(view);
         shoot(window, deltaTime);
-        collisions(enemy, map, deltaTime);
+        collisions(enemies, map, deltaTime);
         movement(event, deltaTime);
         status();
     }

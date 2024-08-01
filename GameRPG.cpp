@@ -18,28 +18,46 @@ int main()
     window.setFramerateLimit(144);
 
     sf::Clock clock; // таймер для контроля частоты обновлений и скорости
+    sf::Clock clockForSpawn; // таймер для создания врагов
 
     Info info;
     Map map;
     Player player;
-    Enemy enemy;
+    std::vector<Enemy> enemies;
+
+    for (size_t i = 0; i < 12; i++)
+    {
+        Enemy enemy;
+        enemies.push_back(enemy);
+    }
 
     info.Initialize();
     map.Initialize();
     player.Initialize();
-    enemy.Initialize();
 
+    /*for (size_t i = 0; i < enemies.size(); i++)
+    {
+        enemies[i].Initialize();
+    }*/
 
+    // Инициализация объектов
     info.Load();
     map.Load();
     player.Load();
-    enemy.Load();
+
+    for (size_t i = 0; i < enemies.size(); i++)
+    {
+        enemies[i].Load();
+    }
+
+    // интервал спавна врагов
+    const float spawnInterval = 2.0f; // интервал спавна врагов в секундах
+    clockForSpawn.restart(); // Запуск таймера спавна
 
     while (window.isOpen())
     {
-        sf::Time deltaTimeTimer = clock.getElapsedTime(); // время, прошедшее с последнего обновления кадра
-        const float deltaTime = deltaTimeTimer.asMilliseconds(); // сохраняем значение 
-        clock.restart();
+        sf::Time deltaTimeTimer = clock.restart(); // время, прошедшее с последнего обновления кадра
+        const float deltaTime = deltaTimeTimer.asMilliseconds(); // сохраняем значение
 
         sf::Event event; // событие
         while (window.pollEvent(event)) // обработка событий
@@ -50,15 +68,33 @@ int main()
             }
         }
 
+        static int enemyCount = 0; // предел обработки врагов
+
+        if (clockForSpawn.getElapsedTime().asSeconds() >= spawnInterval && enemyCount < enemies.size())
+        {
+            clockForSpawn.restart();
+            enemyCount++; // если таймер сработал, то предел стал выше
+        }
+
         window.clear(); // очистка окна
+
         info.Update(deltaTimeTimer, player);
         map.Update(deltaTime);
-        player.Update(event, window, deltaTime, enemy, map);
-        enemy.Update(player, deltaTime, map);
+        player.Update(event, window, deltaTime, enemies, map);
+
+        for (size_t i = 0; i < enemyCount; i++)
+        {
+            enemies[i].Update(player, deltaTime, map);
+        }
 
         map.Draw(window);
         player.Draw(window);
-        enemy.Draw(window);
+
+        for (size_t i = 0; i < enemyCount; i++)
+        {
+            enemies[i].Draw(window);
+        }
+
         info.Draw(window);
 
         window.display(); // отрисовка
@@ -66,3 +102,4 @@ int main()
 
     return 0;
 }
+

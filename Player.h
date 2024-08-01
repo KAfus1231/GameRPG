@@ -59,14 +59,14 @@ public:
 	// методы действий игрока
 	void shoot(sf::RenderWindow& window, float deltaTime); // метод стрельбы
 	void movement(sf::Event& event, float deltaTime); // метод передвижения
-	void collisions(Enemy& enemy, Map & map, float deltaTime); // метод обработки столкновений
+	void collisions(std::vector<Enemy>& enemies, Map & map, float deltaTime); // метод обработки столкновений
 	void status(); // метод вывода и изменения информации над игроком
 	sf::Vector2f getPlayerSpeed(float deltaTime);
 	sf::View camera(sf::View view); // метод камеры
 
 	void Initialize();
 	void Load();
-	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, Enemy &enemy, Map & map);
+	void Update(sf::Event& event, sf::RenderWindow& window, float deltaTime, std::vector<Enemy>& enemies, Map & map);
 	void Draw(sf::RenderWindow& window);
 	// пули
 	sf::Vector2f bulletDirection; // направление пули
