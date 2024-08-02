@@ -14,12 +14,14 @@ private:
 	sf::Texture tileSheetTexture; // текстура карты
 	sf::Sprite sprite;
 
-	static const int mapHeight = 25; // высота карты в плитках
-	static const int mapWidth = 40; // ширина
+	static const int mapHeight = 10; // высота карты в плитках
+	static const int mapWidth = 20; // ширина
 
-	sf::String mapPlan[mapHeight]; // строка элементов для отрисовки карты
-	std::vector<sf::Sprite> tiles; // вектор для хранения плиток и инфы о них
+	sf::String firstLayer[mapHeight]; // строка элементов для отрисовки карты
+	sf::String secondLayer[mapHeight];
+	std::vector<sf::Sprite> firstLayerObjects; // вектор для хранения плиток и инфы о них
 	std::vector<sf::Sprite> mapObjects; // вектор для хранения объектов карты
+	std::vector<sf::Sprite> secondLayerObjects;
 
 	int tileWidth; // кол-во пикселей в плитке по ширине
 	int tileHeight; // по высоте
@@ -31,6 +33,7 @@ public:
 	Map();
 	~Map();
 
+	void LayerLoad(sf::String layer[], std::vector<sf::Sprite> &layerObjects);
 	void Initialize();
 	void Load();
 	void Update(float deltaTime);

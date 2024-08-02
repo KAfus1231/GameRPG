@@ -11,31 +11,28 @@ Map::~Map()
 
 void Map::Initialize() // карта 
 {
-	mapPlan[0] = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-	mapPlan[1] = "I00000000000000000000000000000000000000I";
-	mapPlan[2] = "I00000000000000000000000000000000000000I";
-	mapPlan[3] = "I00000000000000000000000000000000000000I";
-	mapPlan[4] = "I00000000000000000000000000000000000000I";
-	mapPlan[5] = "I00000000000000000000000000000000000000I";
-	mapPlan[6] = "I00000000000000000000000000000000000000I";
-	mapPlan[7] = "I00000000000000000000000000000000000000I";
-	mapPlan[8] = "I00000000000000000000000000000000000000I";
-	mapPlan[9] = "I00000000000000000000000000000000000000I";
-	mapPlan[10] = "I00000000000000000000000000000000000000I";
-	mapPlan[11] = "I0000000000000000000I000000000000000000I";
-	mapPlan[12] = "I00000000000000000000000000000000000000I";
-	mapPlan[13] = "I00000000000000000000000000000000000000I";
-	mapPlan[14] = "I00000000000000000000000000000000000000I";
-	mapPlan[15] = "I00000000000000000000000000000000000000I";
-	mapPlan[16] = "I00000000000000000000000000000000000000I";
-	mapPlan[17] = "I00000000000000000000000000000000000000I";
-	mapPlan[18] = "I00000000000000000000000000000000000000I";
-	mapPlan[19] = "I00000000000000000000000000000000000000I";
-	mapPlan[20] = "I00000000000000000000000000000000000000I";
-	mapPlan[21] = "I00000000000000000000000000000000000000I";
-	mapPlan[22] = "I00000000000000000000000000000000000000I";
-	mapPlan[23] = "I00000000000000000000000000000000000000I";
-	mapPlan[24] = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
+	firstLayer[0] = "IIIIIIIIIIIIIIIIIIII";
+	firstLayer[1] = "I000000000000000000I";
+	firstLayer[2] = "I000000000000000000I";
+	firstLayer[3] = "I000000000000000000I";
+	firstLayer[4] = "I000000000000000000I";
+	firstLayer[5] = "I0III00000000000000I";
+	firstLayer[6] = "I000000000000000000I";
+	firstLayer[7] = "I000000000IIII00000I";
+	firstLayer[8] = "I000000000000000000I";
+	firstLayer[9] = "IIIIIIIIIIIIIIIIIIII";
+
+	secondLayer[0] = "IIIIIIIIIIIIIIIIIIII";
+	secondLayer[1] = "I00S000000000000000I";
+	secondLayer[2] = "I000000000000000000I";
+	secondLayer[3] = "I00000000000000BB00I";
+	secondLayer[4] = "I00S00000000000S000I";
+	secondLayer[5] = "I0IIIS0000000000000I";
+	secondLayer[6] = "I000000000000S00000I";
+	secondLayer[7] = "I000000000IIII00000I";
+	secondLayer[8] = "I0BB000000000000000I";
+	secondLayer[9] = "IIIIIIIIIIIIIIIIIIII";
+
 }
 
 void Map::Load()
@@ -59,24 +56,46 @@ void Map::Load()
 		std::cerr << "Problem:" << errMsg << std::endl; // ловлю ошибку
 	}
 
-	for(int i = 0; i < mapHeight; i++) // пробегаюсь по столбцам
-		for(int j = 0; j < mapWidth; j++) // а тут по строке
-			switch(mapPlan[i][j]) 
+	LayerLoad(firstLayer, firstLayerObjects); // загрузка объектов певрого сло€
+	LayerLoad(secondLayer, secondLayerObjects); // загрузка объектов второго сло€
+
+}
+
+void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
+{
+	for (int i = 0; i < mapHeight; i++) // пробегаюсь по столбцам
+		for (int j = 0; j < mapWidth; j++) // а тут по строке
+		{
+			switch (layer[i][j])
 			{
-			case('0') : // если 0 рисую пол
+			case('0'): // если 0 рисую пол
 				sprite.setTextureRect(sf::IntRect(tileWidth * 1, tileHeight * 10, tileWidth, tileHeight)); // вот сам пол
 				sprite.setScale(sf::Vector2f(5, 5)); // мен€ю размер с 16 на 16 * Scale.x(.y)
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				tiles.push_back(sprite); // кидаю плитку в вектор дл€ инфы о ней
+				layerObjects.push_back(sprite); // кидаю плитку в вектор дл€ инфы о ней
 				break;
-			case('I') : // если I рисую стену
+			case('I'): // если I рисую стену
 				sprite.setTextureRect(sf::IntRect(tileWidth * 10, tileHeight * 4, tileWidth, tileHeight));
 				sprite.setScale(sf::Vector2f(5, 5));
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				tiles.push_back(sprite);
+				layerObjects.push_back(sprite);
 				mapObjects.push_back(sprite); // если встречаетс€ стена, то кидаем ее в вектор с объектами карты
 				break;
+			case('S'): // черепок
+				sprite.setTextureRect(sf::IntRect(tileWidth * 15, tileHeight * 4, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(4, 4));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				layerObjects.push_back(sprite);
+				break;
+			case('B') : // бочка
+				sprite.setTextureRect(sf::IntRect(tileWidth * 8, tileHeight * 5, tileWidth, tileHeight  *2));
+				sprite.setScale(sf::Vector2f(4, 4));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 4);
+				mapObjects.push_back(sprite);
+				layerObjects.push_back(sprite);
 			}
+
+		}
 }
 
 void Map::Update(float deltaTime) // взаимодействие игрока и карты
@@ -85,6 +104,9 @@ void Map::Update(float deltaTime) // взаимодействие игрока и карты
 
 void Map::Draw(sf::RenderWindow& window)
 {
-	for (size_t i = 0; i < mapHeight * mapWidth; i++)
-		window.draw(tiles[i]);
+	for (const auto & tiles : firstLayerObjects)
+		window.draw(tiles);
+
+	for (const auto& tiles : secondLayerObjects)
+		window.draw(tiles);
 }

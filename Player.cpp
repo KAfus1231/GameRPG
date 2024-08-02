@@ -48,7 +48,7 @@ void Player::Load() // загрузка персонажа
 
         sprite.setTexture(texture);// передача в спрайт текстуры игрока
         sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y)); // выбор текстуры игрока
-        hitbox.setPosition(sf::Vector2f(1500, 1000));
+        hitbox.setPosition(sf::Vector2f(1000, 670));
 
         sprite.scale(sf::Vector2f(2.0, 2.0)); // размер персонажа
         
