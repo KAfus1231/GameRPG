@@ -14,8 +14,8 @@ private:
 	sf::Texture tileSheetTexture; // текстура карты
 	sf::Sprite sprite;
 
-	static const int mapHeight = 15; // высота карты в плитках
-	static const int mapWidth = 25; // ширина
+	static const int mapHeight = 25; // высота карты в плитках
+	static const int mapWidth = 40; // ширина
 
 	sf::String mapPlan[mapHeight]; // строка элементов для отрисовки карты
 	std::vector<sf::Sprite> tiles; // вектор для хранения плиток и инфы о них

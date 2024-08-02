@@ -271,6 +271,7 @@ void Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
             //столкновение игрока с объектами карты
             if (hitbox.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
             {
+                std::cout << "Collision" << std::endl;
                 playerDirection = hitbox.getPosition() - mapObject.getPosition(); // вектор столкновения игрока и объекта
                 playerDirection = Math::NormalizeVector(playerDirection); // нормализация вектора столкновения
 

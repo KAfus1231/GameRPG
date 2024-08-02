@@ -35,11 +35,6 @@ int main()
     map.Initialize();
     player.Initialize();
 
-    /*for (size_t i = 0; i < enemies.size(); i++)
-    {
-        enemies[i].Initialize();
-    }*/
-
     // Инициализация объектов
     info.Load();
     map.Load();
@@ -73,6 +68,8 @@ int main()
         if (clockForSpawn.getElapsedTime().asSeconds() >= spawnInterval && enemyCount < enemies.size())
         {
             clockForSpawn.restart();
+            if (enemies[enemyCount].getEnemyIsDead()) // удаление врага, если он умер
+                enemies.erase(enemies.begin() + enemyCount);
             enemyCount++; // если таймер сработал, то предел стал выше
         }
 
@@ -82,18 +79,18 @@ int main()
         map.Update(deltaTime);
         player.Update(event, window, deltaTime, enemies, map);
 
-        for (size_t i = 0; i < enemyCount; i++)
+        /*for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Update(player, deltaTime, map);
-        }
+        }*/
 
         map.Draw(window);
         player.Draw(window);
 
-        for (size_t i = 0; i < enemyCount; i++)
+        /*for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Draw(window);
-        }
+        }*/
 
         info.Draw(window);
 
