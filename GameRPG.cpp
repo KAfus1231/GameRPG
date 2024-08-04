@@ -84,8 +84,9 @@ int main()
             enemies[i].Update(player, deltaTime, map);
         }*/
 
-        map.Draw(window);
+        map.DrawFirstLayer(window);
         player.Draw(window);
+        map.DrawSecondLayer(window);
 
         /*for (size_t i = 0; i < enemyCount; i++)
         {

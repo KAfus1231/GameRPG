@@ -132,11 +132,11 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
     }
 
     // столкновение с объектами карты
-    for (size_t i = 0; i < map.mapObjects.size(); i++)
+    for (size_t i = 0; i < map.mapHitbox.size(); i++)
     {
-        if (hitbox.getGlobalBounds().intersects(map.mapObjects[i].getGlobalBounds()))
+        if (hitbox.getGlobalBounds().intersects(map.mapHitbox[i].getGlobalBounds()))
         {
-            collisionDirection = hitbox.getPosition() - map.mapObjects[i].getPosition();
+            collisionDirection = hitbox.getPosition() - map.mapHitbox[i].getPosition();
             collisionDirection = Math::NormalizeVector(collisionDirection);
 
             hitbox.move(collisionDirection.x * 8, collisionDirection.y * 8);

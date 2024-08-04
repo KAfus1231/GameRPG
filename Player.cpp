@@ -241,7 +241,7 @@ void Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
     if (timeForCollision >= 0.7)
         clockForCollision.restart();
 
-    for (const auto& mapObject : map.mapObjects) {
+    for (const auto& mapHitbox : map.mapHitbox) {
         for(size_t i = 0; i < enemies.size(); i ++)
         {
             //столкновение игрока и врага  
@@ -269,10 +269,10 @@ void Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
             }
 
             //столкновение игрока с объектами карты
-            if (hitbox.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
+            if (hitbox.getGlobalBounds().intersects(mapHitbox.getGlobalBounds()))
             {
                 std::cout << "Collision" << std::endl;
-                playerDirection = hitbox.getPosition() - mapObject.getPosition(); // вектор столкновения игрока и объекта
+                playerDirection = hitbox.getPosition() - mapHitbox.getPosition(); // вектор столкновения игрока и объекта
                 playerDirection = Math::NormalizeVector(playerDirection); // нормализация вектора столкновения
 
                 if (isCollision)
@@ -288,7 +288,7 @@ void Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
         // столкновение пули с объектами карты
         for (const auto& bullet: bullets)
         {
-            if (bullet.getGlobalBounds().intersects(mapObject.getGlobalBounds()))
+            if (bullet.getGlobalBounds().intersects(mapHitbox.getGlobalBounds()))
             {
                 bullets.erase(bullets.begin());
                 bulletsDirection.erase(bulletsDirection.begin());
