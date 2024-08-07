@@ -204,7 +204,7 @@ void Enemy::Draw(sf::RenderWindow& window)
     if(health > 0)
     {
         window.draw(sprite);
-        window.draw(hitbox);
+        /*window.draw(hitbox);*/
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
     }

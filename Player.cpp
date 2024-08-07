@@ -354,7 +354,7 @@ void Player::Draw(sf::RenderWindow& window)
     {
         window.setView(view);
         window.draw(sprite);
-        window.draw(hitbox);
+       /* window.draw(hitbox);*/
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
 

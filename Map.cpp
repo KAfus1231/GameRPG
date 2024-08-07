@@ -12,68 +12,68 @@ Map::~Map()
 void Map::Initialize() // карта 
 {
 	// ПЕРВЫЙ СЛОЙ!!
-	firstLayer[0] = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-	firstLayer[1] = "I000000000000000000000000000000000I";
-	firstLayer[2] = "I000000000000000000000000000000000I";
-	firstLayer[3] = "I0000000I0000000000000000I00000000I";
-	firstLayer[4] = "I00000000I00000000000000I000000000I";
-	firstLayer[5] = "I000000000000000000000000000000000I";
-	firstLayer[6] = "I000000000000000000000000000000000I";
-	firstLayer[7] = "I00000000I00000000000000I000000000I";
-	firstLayer[8] = "I0000000I0000000000000000I00000000I";
-	firstLayer[9] = "I000000I00000000000000000000000000I";
-	firstLayer[10] = "I00000I000000000000000000000000000I";
-	firstLayer[11] = "I0000000000000000000000II000000000I";
-	firstLayer[12] = "I000000000000000000000000000000000I";
-	firstLayer[13] = "I000000000000000000000000000000000I";
-	firstLayer[14] = "I000000II0000000000000III000000000I";
-	firstLayer[15] = "I000000000000000000000000000000000I";
-	firstLayer[16] = "I000000000000000000000000000000000I";
-	firstLayer[17] = "I000000I00000000000000III000000000I";
-	firstLayer[18] = "I000000000000000000000000000000000I";
-	firstLayer[19] = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
+	firstLayer[0] =  "                                   ";
+	firstLayer[1] =  "                                   ";
+	firstLayer[2] =  "                                   ";
+	firstLayer[3] =  "                                   ";
+	firstLayer[4] =  "   [-----------]                   ";
+	firstLayer[5] =  "   |           |                   ";
+	firstLayer[6] =  "   |00000000000{-----]             ";
+	firstLayer[7] =  "   |00000000000      {--------]    ";
+	firstLayer[8] =  " --}00000000000000000         |    ";
+	firstLayer[9] =  "0   00000000000000000000000000|    ";
+	firstLayer[10] = "000000000000000000000000000000|    ";
+	firstLayer[11] = "0[__0000000[__0000000000000000|    ";
+	firstLayer[12] = " |000000000|000000000000000000|    ";
+	firstLayer[13] = " |000000000|000000000000000000|    ";
+	firstLayer[14] = " <_________|000000000000000000|    ";
+	firstLayer[15] = "           |000000000000000000|    ";
+	firstLayer[16] = "           <__________________>    ";
+	firstLayer[17] = "                                   ";
+	firstLayer[18] = "                                   ";
+	firstLayer[19] = "                                   ";
 
 	// ВТОРОЙ СЛОЙ!!
-	secondLayer[0] = "                                   ";
-	secondLayer[1] = "                                   ";
-	secondLayer[2] = "                                   ";
-	secondLayer[3] = "                                   ";
-	secondLayer[4] = "        S                          ";
-	secondLayer[5] = "                                   ";
-	secondLayer[6] = "                                   ";
-	secondLayer[7] = "        S                S         ";
-	secondLayer[8] = "                                   ";
-	secondLayer[9] = "        S                          ";
-	secondLayer[10] = "                                   ";
-	secondLayer[11] = "                 S                 ";
-	secondLayer[12] = "                                   ";
-	secondLayer[13] = "       S                           ";
-	secondLayer[14] = "                         S         ";
-	secondLayer[15] = "                       S           ";
-	secondLayer[16] = "                                   ";
-	secondLayer[17] = "                         S         ";
+	secondLayer[0] =  "                                   ";
+	secondLayer[1] =  "                                   ";
+	secondLayer[2] =  "                                   ";
+	secondLayer[3] =  "                                   ";
+	secondLayer[4] =  "   IIIIIIIIIIIII                   ";
+	secondLayer[5] =  "   I           I                   ";
+	secondLayer[6] =  "   I  S        IIIIIII             ";
+	secondLayer[7] =  "   I                 IIIIIIIIII    ";
+	secondLayer[8] =  " III          S               I    ";
+	secondLayer[9] =  "S                             I    ";
+	secondLayer[10] = "        S                     I    ";
+	secondLayer[11] = " III       III         S      I    ";
+	secondLayer[12] = " I         I                  I    ";
+	secondLayer[13] = " I         I                  I    ";
+	secondLayer[14] = " IIIIIIIIIII   S        S     I    ";
+	secondLayer[15] = "           I                  I    ";
+	secondLayer[16] = "           IIIIIIIIIIIIIIIIIIII    ";
+	secondLayer[17] = "                                   ";
 	secondLayer[18] = "                                   ";
 	secondLayer[19] = "                                   ";
 
 	// ТРЕТИЙ СЛОЙ!!ПОСЛЕДНИЙ!!
-	thirdLayer[0] = "                                   ";
-	thirdLayer[1] = "                                   ";
-	thirdLayer[2] = "                                   ";
-	thirdLayer[3] = "                                   ";
-	thirdLayer[4] = "          B            B           ";
-	thirdLayer[5] = "                                   ";
-	thirdLayer[6] = "                                   ";
-	thirdLayer[7] = "                                   ";
-	thirdLayer[8] = "         B                         ";
-	thirdLayer[9] = "                                   ";
-	thirdLayer[10] = "       B                           ";
-	thirdLayer[11] = "                                   ";
-	thirdLayer[12] = "                                   ";
-	thirdLayer[13] = "                                   ";
-	thirdLayer[14] = "                                   ";
-	thirdLayer[15] = "                                   ";
-	thirdLayer[16] = "                                   ";
-	thirdLayer[17] = "            B                      ";
+	thirdLayer[0] =  "                                   ";
+	thirdLayer[1] =  "                                   ";
+	thirdLayer[2] =  "                                   ";
+	thirdLayer[3] =  "                                   ";
+	thirdLayer[4] =  "   IIIIIIIIIIIII                   ";
+	thirdLayer[5] =  "   I           I                   ";
+	thirdLayer[6] =  "   IB          IIIIIII             ";
+	thirdLayer[7] =  "   I                 IIIIIIIIII    ";
+	thirdLayer[8] =  " III                B         I    ";
+	thirdLayer[9] =  "                             BI    ";
+	thirdLayer[10] = "                              I    ";
+	thirdLayer[11] = " III       III         B      I    ";
+	thirdLayer[12] = " IB        I                  I    ";
+	thirdLayer[13] = " IB        I                  I    ";
+	thirdLayer[14] = " IIIIIIIIIII                  I    ";
+	thirdLayer[15] = "           I                  I    ";
+	thirdLayer[16] = "           IIIIIIIIIIIIIIIIIIII    ";
+	thirdLayer[17] = "                                   ";
 	thirdLayer[18] = "                                   ";
 	thirdLayer[19] = "                                   ";
 
@@ -113,37 +113,130 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 		{
 			switch (layer[i][j])
 			{
-			case('0'): // если 0 рисую пол
-				sprite.setTextureRect(sf::IntRect(tileWidth * 1, tileHeight * 10, tileWidth, tileHeight)); // вот сам пол
+			case('0'): // если 0 рисую случайный пол
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * (rand() % 3), tileHeight * (9 + rand() % 3), tileWidth, tileHeight)); // вот сам пол
 				sprite.setScale(sf::Vector2f(5, 5)); // меняю размер с 16 на 16 * Scale.x(.y)
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				layerObjects.push_back(sprite); // кидаю плитку в вектор для инфы о ней
 				break;
-			case('I'): // если I рисую стену
-				sprite.setTextureRect(sf::IntRect(tileWidth * 10, tileHeight * 4, tileWidth, tileHeight));
+			case('-'): // горизонтальная стена СВЕРХУ
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 3, tileHeight * 0, tileWidth, 2 * tileHeight));
 				sprite.setScale(sf::Vector2f(5, 5));
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				//создание хитбокса для спрайта
 				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
-
+				layerObjects.push_back(sprite);
+				break;
+			case('F'): // горизонтальная стена сверху с флагом
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * (3 + rand() % 4), tileHeight * 3, tileWidth, 2 * tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				//создание хитбокса для спрайта
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('_'): // горизонтальная стена СНИЗУ
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 1, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				//создание хитбокса для спрайта
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('|'): // вертикальная стена
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case(']'): // разворот стены по часовой сверху
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 0, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('['): // разворот стены против часовой сверху
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 0, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('{'): // разворот стены против часовой снизу
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 2, tileWidth, tileHeight * 2));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('<'): // разворот стены против часовой снизу на нижнюю стену
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 2, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('}'): // разворот стены по часовой снизу
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 1, tileWidth, tileHeight * 2));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+			case('>'): // разворот стены по часовой снизу на нижнюю стену
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
 			case('S'): // черепок
+				sprite.setOrigin(sf::Vector2f(0, 0));
 				sprite.setTextureRect(sf::IntRect(tileWidth * 15, tileHeight * 4, tileWidth, tileHeight));
 				sprite.setScale(sf::Vector2f(4, 4));
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				layerObjects.push_back(sprite);
 				break;
-			case('B') : // бочка
-				sprite.setTextureRect(sf::IntRect(tileWidth * 8, tileHeight * 5 + 6, tileWidth, tileHeight + 4));
+			case('B'): // бочка
+				sprite.setOrigin(sf::Vector2f(0, 0));
+				sprite.setTextureRect(sf::IntRect(tileWidth * (rand() % 2 + 7), tileHeight * 5 + 7, tileWidth, tileHeight + 4));
 				sprite.setScale(sf::Vector2f(4, 4));
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				// создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, (tileHeight - 6) * sprite.getScale().y, 0, 40);
-				
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x,tileHeight * sprite.getScale().y - 40, 0, 40);
 				layerObjects.push_back(sprite);
+				break;
+			case('D'): // дверь
+				sprite.setOrigin(sf::Vector2f(0, tileHeight));
+				sprite.setTextureRect(sf::IntRect(tileWidth * 0, tileHeight * 5, tileWidth * 3, tileHeight * 2));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				// создание хитбокса для спрайта
+				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('d'): // развернутая дверь
+				sprite.setOrigin(sf::Vector2f(0, 0));
+				sprite.setTextureRect(sf::IntRect(tileWidth * 3, tileHeight * 5, tileWidth * 3, tileHeight * 2));
+				sprite.setScale(sf::Vector2f(5, 5));
+				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				// создание хитбокса для спрайта
+				/*CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);*/
+				layerObjects.push_back(sprite);
+				break;
 			}
-
 		}
 }
 
@@ -163,6 +256,7 @@ void Map::Update(float deltaTime) // взаимодействие игрока и карты
 {
 }
 
+// отрисовка первого слоя карты
 void Map::DrawFirstLayer(sf::RenderWindow& window)
 {
 	for (const auto & tiles : firstLayerObjects)
@@ -171,10 +265,11 @@ void Map::DrawFirstLayer(sf::RenderWindow& window)
 	for (const auto& tiles : secondLayerObjects)
 		window.draw(tiles);
 
-	for (const auto& hitbox : mapHitbox)
-		window.draw(hitbox);
+	/*for (const auto& hitbox : mapHitbox)
+		window.draw(hitbox);*/
 }
 
+// отрисовка второго слоя карты
 void Map::DrawSecondLayer(sf::RenderWindow& window)
 {
 	for (const auto& hitbox : thirdLayerObjects)

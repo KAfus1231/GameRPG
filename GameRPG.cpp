@@ -16,6 +16,11 @@ int main()
     settings.antialiasingLevel = 16; // буферизация
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "RPG", sf::Style::Default, settings);
     window.setFramerateLimit(144);
+    sf::RectangleShape backGround;
+    backGround.setFillColor(sf::Color(128, 0, 128));
+    backGround.setSize(sf::Vector2f(10000, 10000));
+    backGround.setPosition(1400, 800);
+    backGround.setOrigin(5000, 5000);
 
     sf::Clock clock; // таймер для контроля частоты обновлений и скорости
     sf::Clock clockForSpawn; // таймер для создания врагов
@@ -83,15 +88,14 @@ int main()
         {
             enemies[i].Update(player, deltaTime, map);
         }*/
-
         map.DrawFirstLayer(window);
         player.Draw(window);
-        map.DrawSecondLayer(window);
-
         /*for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Draw(window);
         }*/
+        map.DrawSecondLayer(window);
+
 
         info.Draw(window);
 
