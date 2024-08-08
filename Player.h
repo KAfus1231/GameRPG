@@ -24,6 +24,8 @@ private:
 	bool isMovingRight;
 	bool reloadDash = false; // флаг для перезарядки дэша
 	bool isDash; // флаг для дэша
+	bool isShooting = false;
+
 	sf::Vector2f previousPosition;
 
 	float playerSpeed = 0.2f; // скорость кента
@@ -44,7 +46,7 @@ private:
 	float frame = 0; // кадр персонажа
 	float frameSpeed = 0.2f; //скорость смены кадров анимации
 
-	float bulletsSpeed = 0.08f; // скорость смены кадров стрельбы
+	float bulletsSpeed = 0.1f; // скорость смены кадров стрельбы
 	float bulletSpeed = 1.5f; // скорость пули
 
 	sf::View view; // камера для наблюдения за игроком

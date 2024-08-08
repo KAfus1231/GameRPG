@@ -53,14 +53,15 @@ void Enemy::Load()
 
         hitbox.setSize(sf::Vector2f(70, 100)); // утсановка размера контура
 
-        int spawn = std::rand() % 4; // установка случайной пизиции для врага
-        switch (spawn)
-        {
-        case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
-        case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
-        case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
-        case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
-        }
+        //int spawn = std::rand() % 4; // установка случайной пизиции для врага
+        //switch (spawn)
+        //{
+        //case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
+        //case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
+        //case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
+        //case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
+        //}
+        hitbox.setPosition(sf::Vector2f(0, 720));
     }
     catch(const char* errMsg)
     {
@@ -121,7 +122,10 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
         if (hitbox.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
         {
             health -= 10;
-            std::cout << health << std::endl;
+            collisionDirection = hitbox.getPosition() - player.bullets[i].getPosition();
+            collisionDirection = Math::NormalizeVector(collisionDirection);
+            hitbox.move(collisionDirection.x * 8, collisionDirection.y * 8);
+
             hitbox.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
             player.bullets.erase(player.bullets.begin() + i); // удаление пули при попадании во врага
             player.bulletsDirection.erase(player.bulletsDirection.begin() + i); // удаление направления пули при попадании во врага

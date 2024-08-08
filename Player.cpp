@@ -69,14 +69,21 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
     sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition); // преобразование 2i к 2f *не знаю нах, но пусть будет*
 
     // управление пулями
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timeForBullets > bulletsSpeed) // утановка позиции пули
-    {
-        bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // добавление новой пули в вектор
-        bullets[bullets.size() - 1].setPosition(hitbox.getPosition() + sf::Vector2f(35, 50));
-        bulletDirection = mousePositionWindow - bullets[bullets.size() - 1].getPosition(); // направление выстрела
-        bulletDirection = Math::NormalizeVector(bulletDirection); // нормализация вектора
-        bulletsDirection.push_back(bulletDirection); // добавление в вектор позиции курсора
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) // утановка позиции пули
+    { 
+        isShooting = true;
+
+        if(timeForBullets > bulletsSpeed)
+        {
+            bullets.push_back(sf::RectangleShape(sf::Vector2f(15, 15))); // добавление новой пули в вектор
+            bullets[bullets.size() - 1].setPosition(hitbox.getPosition() + sf::Vector2f(35, 50));
+            bulletDirection = mousePositionWindow - bullets[bullets.size() - 1].getPosition(); // направление выстрела
+            bulletDirection = Math::NormalizeVector(bulletDirection); // нормализация вектора
+            bulletsDirection.push_back(bulletDirection); // добавление в вектор позиции курсора
+        }
     }
+    else
+        isShooting = false;
 
     for (size_t i = 0; i < bullets.size(); i++) // отрисовка стрельбы
     {
@@ -91,6 +98,7 @@ void Player::movement(sf::Event& event, float deltaTime)
 {
     sf::Vector2f movement(0, 0); // вектор нормали
     float timeForAnimation = clockForAnimation.getElapsedTime().asSeconds(); // время с момента запуска таймера для анимации
+    playerSpeed = isShooting ? 0.125f : 0.2f; // определение скорости игрока
     sprite.setPosition(hitbox.getPosition().x + // ->
         (70 - sprite.getGlobalBounds().width) / 2, hitbox.getPosition().y - sprite.getGlobalBounds().height + 100);
 

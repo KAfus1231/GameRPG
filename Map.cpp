@@ -5,9 +5,7 @@ Map::Map() : tileWidth(16), tileHeight(16), totalTilesX(0), totalTilesY(0)
 {
 }
 
-Map::~Map()
-{
-}
+Map::~Map() {}
 
 void Map::Initialize() // карта 
 {
@@ -194,6 +192,7 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
 				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
 				layerObjects.push_back(sprite);
+				break;
 			case('>'): // разворот стены по часовой снизу на нижнюю стену
 				sprite.setOrigin(0, 0);
 				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 1, tileWidth, tileHeight));
@@ -236,6 +235,13 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 				/*CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);*/
 				layerObjects.push_back(sprite);
 				break;
+			case('C'): // мишень
+				Combat* combat = new Combat();
+				combat->CreateAnimation();
+				combat->getSprite()->setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				CreateHitbox(*combat->getSprite(), tileWidth * 2, tileHeight * 6, 47, 25);
+				animationObjects.push_back(combat);
+				break;
 			}
 		}
 }
@@ -254,6 +260,7 @@ void Map::CreateHitbox(sf::Sprite &sprite, int x, int y, int posX, int posY)
 
 void Map::Update(float deltaTime) // взаимодействие игрока и карты
 {
+	
 }
 
 // отрисовка первого слоя карты
@@ -264,6 +271,12 @@ void Map::DrawFirstLayer(sf::RenderWindow& window)
 
 	for (const auto& tiles : secondLayerObjects)
 		window.draw(tiles);
+
+	for (size_t i = 0; i < animationObjects.size(); i++)
+	{
+		sf::Sprite* animSprite = animationObjects[i]->UpdateAnimation();
+		window.draw(*animSprite);
+	}
 
 	/*for (const auto& hitbox : mapHitbox)
 		window.draw(hitbox);*/

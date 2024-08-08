@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Info.h"
-
+#include "Animations.h"
 
 int main()
 {
@@ -88,12 +88,15 @@ int main()
         {
             enemies[i].Update(player, deltaTime, map);
         }*/
+
         map.DrawFirstLayer(window);
         player.Draw(window);
+
         /*for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Draw(window);
         }*/
+
         map.DrawSecondLayer(window);
 
 
