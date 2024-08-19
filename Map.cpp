@@ -1,7 +1,7 @@
 #include "Map.h"
 #include <iostream>
 
-Map::Map() : tileWidth(16), tileHeight(16), totalTilesX(0), totalTilesY(0)
+Map::Map() : tileWidth(96), tileHeight(96), totalTilesX(0), totalTilesY(0)
 {
 }
 
@@ -10,48 +10,48 @@ Map::~Map() {}
 void Map::Initialize() // карта 
 {
 	// ПЕРВЫЙ СЛОЙ!!
-	firstLayer[0] =  "                                   ";
-	firstLayer[1] =  "                                   ";
-	firstLayer[2] =  "                                   ";
+	firstLayer[0] =  "    0  0   0  0   0   0            ";
+	firstLayer[1] =  "     0      0    0 0 0             ";
+	firstLayer[2] =  "   0  0    0    0   0              ";
 	firstLayer[3] =  "                                   ";
-	firstLayer[4] =  "   [-----------]                   ";
-	firstLayer[5] =  "   |           |                   ";
-	firstLayer[6] =  "   |00000000000{-----]             ";
-	firstLayer[7] =  "   |00000000000      {--------]    ";
-	firstLayer[8] =  " --}00000000000000000         |    ";
-	firstLayer[9] =  "0   00000000000000000000000000|    ";
-	firstLayer[10] = "000000000000000000000000000000|    ";
-	firstLayer[11] = "0[__0000000[__0000000000000000|    ";
-	firstLayer[12] = " |000000000|000000000000000000|    ";
-	firstLayer[13] = " |000000000|000000000000000000|    ";
-	firstLayer[14] = " <_________|000000000000000000|    ";
-	firstLayer[15] = "           |000000000000000000|    ";
-	firstLayer[16] = "           <__________________>    ";
+	firstLayer[4] =  "   0000000000000                   ";
+	firstLayer[5] =  "   0000000000000                   ";
+	firstLayer[6] =  "   0000000000000000000             ";
+	firstLayer[7] =  "   0000000000000000000000000000    ";
+	firstLayer[8] =  " 000000000000000000000000000000    ";
+	firstLayer[9] =  " 000000000000000000000000000000    ";
+	firstLayer[10] = " 000000000000000000000000000000    ";
+	firstLayer[11] = " 000000000000000000000000000000    ";
+	firstLayer[12] = " 000000000000000000000000000000    ";
+	firstLayer[13] = " 000000000000000000000000000000    ";
+	firstLayer[14] = " 000000000000000000000000000000    ";
+	firstLayer[15] = "           00000000000000000000    ";
+	firstLayer[16] = "           00000000000000000000    ";
 	firstLayer[17] = "                                   ";
 	firstLayer[18] = "                                   ";
 	firstLayer[19] = "                                   ";
 
 	// ВТОРОЙ СЛОЙ!!
-	secondLayer[0] =  "                                   ";
-	secondLayer[1] =  "                                   ";
-	secondLayer[2] =  "                                   ";
-	secondLayer[3] =  "                                   ";
-	secondLayer[4] =  "   IIIIIIIIIIIII                   ";
-	secondLayer[5] =  "   I           I                   ";
-	secondLayer[6] =  "   I  S        IIIIIII             ";
-	secondLayer[7] =  "   I                 IIIIIIIIII    ";
-	secondLayer[8] =  " III          S               I    ";
-	secondLayer[9] =  "S                             I    ";
-	secondLayer[10] = "        S                     I    ";
-	secondLayer[11] = " III       III         S      I    ";
-	secondLayer[12] = " I         I                  I    ";
-	secondLayer[13] = " I         I                  I    ";
-	secondLayer[14] = " IIIIIIIIIII   S        S     I    ";
-	secondLayer[15] = "           I                  I    ";
-	secondLayer[16] = "           IIIIIIIIIIIIIIIIIIII    ";
-	secondLayer[17] = "                                   ";
-	secondLayer[18] = "                                   ";
-	secondLayer[19] = "                                   ";
+	secondLayer[0] =  "                                   "; 
+	secondLayer[1] =  "                                   "; 
+	secondLayer[2] =  "                                   "; 
+	secondLayer[3] =  "                                   "; 
+	secondLayer[4] =  "   [-----------]                   "; 
+	secondLayer[5] =  "   1           2                   "; 
+	secondLayer[6] =  "   1           <-----]             "; 
+	secondLayer[7] =  "   1                 <--------]    "; 
+	secondLayer[8] =  " (->                          2    "; 
+	secondLayer[9] =  "                              2    "; 
+	secondLayer[10] = "                              2    "; 
+	secondLayer[11] = " [-)       [-)                2    "; 
+	secondLayer[12] = " 1         1                  2    "; 
+	secondLayer[13] = " 1         1                  2    "; 
+	secondLayer[14] = " {---------1                  2    "; 
+	secondLayer[15] = "           1                  2    "; 
+	secondLayer[16] = "           {------------------}    "; 
+	secondLayer[17] = "                                   "; 
+	secondLayer[18] = "                                   "; 
+	secondLayer[19] = "                                   "; 
 
 	// ТРЕТИЙ СЛОЙ!!ПОСЛЕДНИЙ!!
 	thirdLayer[0] =  "                                   ";
@@ -60,14 +60,14 @@ void Map::Initialize() // карта
 	thirdLayer[3] =  "                                   ";
 	thirdLayer[4] =  "   IIIIIIIIIIIII                   ";
 	thirdLayer[5] =  "   I           I                   ";
-	thirdLayer[6] =  "   IB          IIIIIII             ";
+	thirdLayer[6] =  "   I           IIIIIII             ";
 	thirdLayer[7] =  "   I                 IIIIIIIIII    ";
-	thirdLayer[8] =  " III                B         I    ";
-	thirdLayer[9] =  "                             BI    ";
+	thirdLayer[8] =  " III                          I    ";
+	thirdLayer[9] =  "                              I    ";
 	thirdLayer[10] = "                              I    ";
-	thirdLayer[11] = " III       III         B      I    ";
-	thirdLayer[12] = " IB        I                  I    ";
-	thirdLayer[13] = " IB        I                  I    ";
+	thirdLayer[11] = " III       III                I    ";
+	thirdLayer[12] = " I         I                  I    ";
+	thirdLayer[13] = " I         I                  I    ";
 	thirdLayer[14] = " IIIIIIIIIII                  I    ";
 	thirdLayer[15] = "           I                  I    ";
 	thirdLayer[16] = "           IIIIIIIIIIIIIIIIIIII    ";
@@ -86,11 +86,11 @@ void Map::Load()
 
 	try // пытаюсь загрузить текстуру
 	{
-		tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png");
+		tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset x3.png");
 		sprite.setTexture(tileSheetTexture); // установка спрайта
 		std::cout << "Tileset load!" << std::endl;
 
-		if(!tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset.png"))
+		if(!tileSheetTexture.loadFromFile("Assets/World/Dungeon/Tileset x3.png"))
 			throw "void::Map::Load()"; // выкидываю ошибку
 	}
 	catch (const char* errMsg)
@@ -111,130 +111,95 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 		{
 			switch (layer[i][j])
 			{
-			case('0'): // если 0 рисую случайный пол
+			case('0'): // пол
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * (rand() % 3), tileHeight * (9 + rand() % 3), tileWidth, tileHeight)); // вот сам пол
-				sprite.setScale(sf::Vector2f(5, 5)); // меняю размер с 16 на 16 * Scale.x(.y)
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 34 , tileHeight * 1, tileWidth, tileHeight)); // вот сам пол
+				sprite.setPosition(j * tileWidth, i * tileHeight);
 				layerObjects.push_back(sprite); // кидаю плитку в вектор для инфы о ней
 				break;
-			case('-'): // горизонтальная стена СВЕРХУ
+			case('-'): // горизонтальная стена
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 3, tileHeight * 0, tileWidth, 2 * tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 5, tileHeight * 0, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
 				//создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('F'): // горизонтальная стена сверху с флагом
+			case('('): // последняя стена слева
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * (3 + rand() % 4), tileHeight * 3, tileWidth, 2 * tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 12, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
 				//создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('_'): // горизонтальная стена СНИЗУ
+			case(')'): // последняя стена справа
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 1, tileHeight * 1, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 14, tileHeight * 5, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
 				//создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('|'): // вертикальная стена
+			case('1'): // вертикальная стена слева
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 1, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 1, tileHeight * 2, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, 21, tileHeight, 0, 0);
+				layerObjects.push_back(sprite);
+				break;
+			case('2'): // вертикальная стена справа
+				sprite.setOrigin(0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 9, tileHeight * 2, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, 21, tileHeight, 75, 0);
 				layerObjects.push_back(sprite);
 				break;
 			case(']'): // разворот стены по часовой сверху
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 0, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 8, tileHeight * 0, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
+				CreateHitbox(sprite, 21, tileHeight, 75, 0);
 				layerObjects.push_back(sprite);
 				break;
 			case('['): // разворот стены против часовой сверху
 				sprite.setOrigin(0, 0);
 				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 0, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
+				CreateHitbox(sprite, 21, tileHeight, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
 			case('{'): // разворот стены против часовой снизу
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 2, tileWidth, tileHeight * 2));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 2, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('<'): // разворот стены против часовой снизу на нижнюю стену
+			case('<'): // переход на разворот стены против часовой
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 2, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 8, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, 21, 48, 75, 0);
 				layerObjects.push_back(sprite);
 				break;
 			case('}'): // разворот стены по часовой снизу
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 1, tileWidth, tileHeight * 2));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 6, tileHeight * 2, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, tileWidth, tileHeight / 2, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('>'): // разворот стены по часовой снизу на нижнюю стену
+			case('>'): // переход на разворот стены по часовой
 				sprite.setOrigin(0, 0);
-				sprite.setTextureRect(sf::IntRect(tileWidth * 4, tileHeight * 1, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
+				sprite.setTextureRect(sf::IntRect(tileWidth * 2, tileHeight * 1, tileWidth, tileHeight));
+				sprite.setPosition(j * tileWidth, i * tileHeight);
+				CreateHitbox(sprite, 21, 48, 0, 0);
 				layerObjects.push_back(sprite);
 				break;
-			case('S'): // черепок
-				sprite.setOrigin(sf::Vector2f(0, 0));
-				sprite.setTextureRect(sf::IntRect(tileWidth * 15, tileHeight * 4, tileWidth, tileHeight));
-				sprite.setScale(sf::Vector2f(4, 4));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				layerObjects.push_back(sprite);
-				break;
-			case('B'): // бочка
-				sprite.setOrigin(sf::Vector2f(0, 0));
-				sprite.setTextureRect(sf::IntRect(tileWidth * (rand() % 2 + 7), tileHeight * 5 + 7, tileWidth, tileHeight + 4));
-				sprite.setScale(sf::Vector2f(4, 4));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				// создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x,tileHeight * sprite.getScale().y - 40, 0, 40);
-				layerObjects.push_back(sprite);
-				break;
-			case('D'): // дверь
-				sprite.setOrigin(sf::Vector2f(0, tileHeight));
-				sprite.setTextureRect(sf::IntRect(tileWidth * 0, tileHeight * 5, tileWidth * 3, tileHeight * 2));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				// создание хитбокса для спрайта
-				CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);
-				layerObjects.push_back(sprite);
-				break;
-			case('d'): // развернутая дверь
-				sprite.setOrigin(sf::Vector2f(0, 0));
-				sprite.setTextureRect(sf::IntRect(tileWidth * 3, tileHeight * 5, tileWidth * 3, tileHeight * 2));
-				sprite.setScale(sf::Vector2f(5, 5));
-				sprite.setPosition(j * tileWidth * 5, i * tileHeight * 5);
-				// создание хитбокса для спрайта
-				/*CreateHitbox(sprite, tileWidth * sprite.getScale().x, tileHeight * sprite.getScale().y, 0, 0);*/
-				layerObjects.push_back(sprite);
-				break;
+			
 			case('C'): // мишень
 				Combat* combat = new Combat();
 				combat->CreateAnimation();

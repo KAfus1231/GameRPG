@@ -19,28 +19,31 @@ private:
 	// анимация смерти
 	bool isDead = false; // флаг смерти)
 	bool deathAnimationComplete = false; // флан анимации смерти
-	float frameDeathSpeed = 120.0f; // скорость смены кадров анимации смерти
+	bool inTheViewing = false; // флаг для обзора врага
+
 	int currentDeathFrame = 0; // кадр анимации смерти
-	float deathAnimationTime = 0.0f; // время прошедшее с прошлого кадра
-	sf::Vector2f deathPosition; // позиция отрисовки анимации
+	int health; // здоровье
 
 	float frame = 0; // кадр врага
-	float frameSpeed = 0.2f; //скорость смены кадров анимации
+	float frameSpeed = 0.15f; //скорость смены кадров анимации
+	float frameDeathSpeed = 100.0f; // скорость смены кадров анимации смерти
+	float deathAnimationTime = 0.0f; // время прошедшее с прошлого кадра
+	float EnemySpeed = 0.5f; // скорость врага
 
 	// текст над врагом
 	sf::RectangleShape boundingRectangleForHP; // обводка для HP
 	sf::RectangleShape rectangleForHP; // полоска hp
+	sf::RectangleShape hitbox; // хитбокс врага
+	sf::RectangleShape view; // обзор врага
 
 	sf::Vector2i size; // размер врага
-	sf::RectangleShape hitbox; // рамка для врага
-
-	float EnemySpeed = 0.5f; // скорость врага
+	sf::Vector2f deathPosition; // позиция отрисовки анимации
 	sf::Vector2f direction; // направление врага
 	sf::Vector2f collisionDirection; // направления столкновения
 
 	sf::Clock clockForAnimation; // таймер для анимаций
-	
-	int health; // здоровье
+	sf::Clock clockForView;
+
 public:
 	Enemy();
 	~Enemy();
@@ -52,6 +55,7 @@ public:
 	void death(); // метод обработки смерти одного из врагов
 	void discardEnemy(float deltaTime, float bounceForce); // отбрасывание врага при столкновении
 	void enemyDeathAnimation(float deltaTime); // анимация смрети
+	bool fieldOfView(float deltaTime,Player& player);
 
 	sf::Vector2f getEnemyDirection(); // геттер направления врага
 	sf::Sprite getEnemySprite();
