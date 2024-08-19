@@ -71,7 +71,7 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
     // управление пулями
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) // утановка позиции пули
     { 
-        isShooting = true;
+        shootAnimationTime += deltaTime;
 
         if(timeForBullets > bulletsSpeed)
         {
