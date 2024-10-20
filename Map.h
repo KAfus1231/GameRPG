@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Player.h"
+#include "Animations.h"
 
 class Player;
+class Animations;
 
 class Map
 {
@@ -24,6 +26,7 @@ private:
 	std::vector<sf::Sprite> firstLayerObjects; // вектор для хранения плиток и инфы о них
 	std::vector<sf::Sprite> secondLayerObjects;
 	std::vector<sf::Sprite> thirdLayerObjects;
+	std::vector<Animations*> animationObjects;
 
 	std::vector<sf::RectangleShape> mapHitbox; // хитбоксы для обхектов на карте
 	sf::RectangleShape hitbox;

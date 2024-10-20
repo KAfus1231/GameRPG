@@ -2,7 +2,6 @@
 #include<iostream>
 #include"Constans.h"
 
-
 Enemy::Enemy() : health(100)
 {
     Initialize();
@@ -29,38 +28,37 @@ void Enemy::Initialize() {
     rectangleForHP.setFillColor(sf::Color::Red);
     rectangleForHP.setSize(sf::Vector2f(76, 10));
 
-    size = sf::Vector2i(64, 64); // размер врага
+    size = sf::Vector2i(96, 96); // размер врага
 }
 
 void Enemy::Load()
 {
     try
     {
-        if (!(texture.loadFromFile("Assets/Enemy/Textures/spritesheetEnemy.png")))
+        if (!(texture.loadFromFile("Assets/Enemy/Textures/enemies x3.png")))
             throw "void Enemy::Load()";
 
-        textureForDeath.loadFromFile("Assets/Enemy/Textures/enemyDeath.png"); // текстурка для гибели
+        textureForDeath.loadFromFile("Assets/Enemy/Textures/enemies x3.png"); // текстурка для гибели
 
         std::cout << "enemy loaded" << std::endl;
 
         spriteForDeath.setTexture(textureForDeath);
         spriteForDeath.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
-        spriteForDeath.scale(2.0, 2.0);
 
         sprite.setTexture(texture);// врага
         sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y)); // выбор текстуры врага
-        sprite.scale(sf::Vector2f(2.0, 2.0)); // размер скелета
 
-        hitbox.setSize(sf::Vector2f(70, 100)); // утсановка размера контура
+        hitbox.setSize(sf::Vector2f(45, 50)); // утсановка размера контура
 
-        int spawn = std::rand() % 4; // установка случайной пизиции для врага
-        switch (spawn)
-        {
-        case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
-        case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
-        case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
-        case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
-        }
+        //int spawn = std::rand() % 4; // установка случайной пизиции для врага
+        //switch (spawn)
+        //{
+        //case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
+        //case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
+        //case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
+        //case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
+        //}
+        hitbox.setPosition(sf::Vector2f(0, 800));
     }
     catch(const char* errMsg)
     {
@@ -76,9 +74,13 @@ void Enemy::movement(Player& player, float deltaTime)
     direction = player.getHitbox().getPosition() - hitbox.getPosition(); // направление для движения врага
     direction = Math::NormalizeVector(direction); // нормализация
 
-    hitbox.setPosition(hitbox.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
-    sprite.setPosition(hitbox.getPosition().x + // ->
-        (70 - sprite.getGlobalBounds().width) / 2, hitbox.getPosition().y - sprite.getGlobalBounds().height + 100);
+    sf::Vector2f spritePosition = sf::Vector2f(hitbox.getPosition().x + // ->
+        (45 - sprite.getGlobalBounds().width) / 2, hitbox.getPosition().y - sprite.getGlobalBounds().height + 80);
+
+    sprite.setPosition(spritePosition);
+
+    if(fieldOfView(deltaTime, player))
+        hitbox.setPosition(hitbox.getPosition() + direction * deltaTime * EnemySpeed); // устоновка поцизии врага (бегает за игроком)
 
     if (timeForAnimation > frameSpeed) // перезапуск таймера если время превысило заданное 
         clockForAnimation.restart();
@@ -86,30 +88,34 @@ void Enemy::movement(Player& player, float deltaTime)
     if (direction.y < 0)
     {
         frame += timeForAnimation;
-        if (frame > 9)
+        if (frame > 3)
             frame = 0;
-        sprite.setTextureRect(sf::IntRect(64 * int(frame), 0, 64, 64));
+        sprite.setTextureRect(sf::IntRect(96 * int(frame), 0, 96, 96));
     }
     if (direction.y > 0)
     {
         frame += timeForAnimation;
-        if (frame > 9)
+        if (frame > 3)
             frame = 0;
-        sprite.setTextureRect(sf::IntRect(64 * int(frame), 128, 64, 64));
+        sprite.setTextureRect(sf::IntRect(96 * int(frame), 0, 96, 96));
     }
-    if (direction.x < 0)
+    if (direction.x < 0) 
     {
         frame += timeForAnimation;
-        if (frame > 9)
+        if (frame > 3)
             frame = 0;
-        sprite.setTextureRect(sf::IntRect(64 * int(frame), 64, 64, 64));
+        sprite.setTextureRect(sf::IntRect(96 * int(frame), 0, 96, 96));
+        sprite.setOrigin(96, 0);
+        sprite.setScale(-1, 1);
     }
     if (direction.x > 0)
     {
         frame += timeForAnimation;
-        if (frame > 9)
+        if (frame > 3)
             frame = 0;
-        sprite.setTextureRect(sf::IntRect(64 * int(frame), 196, 64, 64));
+        sprite.setTextureRect(sf::IntRect(96 * int(frame), 0, 96, 96));
+        sprite.setOrigin(0, 0);
+        sprite.setScale(1, 1);
     }
 }
 // метод обработки столкновений
@@ -121,7 +127,10 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
         if (hitbox.getGlobalBounds().intersects(player.bullets[i].getGlobalBounds()))
         {
             health -= 10;
-            std::cout << health << std::endl;
+            collisionDirection = hitbox.getPosition() - player.bullets[i].getPosition();
+            collisionDirection = Math::NormalizeVector(collisionDirection);
+            hitbox.move(collisionDirection.x * 8, collisionDirection.y * 8);
+
             hitbox.setOutlineColor(sf::Color::Yellow); // при попадании установка желтого цвета рамки
             player.bullets.erase(player.bullets.begin() + i); // удаление пули при попадании во врага
             player.bulletsDirection.erase(player.bulletsDirection.begin() + i); // удаление направления пули при попадании во врага
@@ -136,7 +145,8 @@ void Enemy::collisions(Player& player, Map & map, float deltaTime)
     {
         if (hitbox.getGlobalBounds().intersects(map.mapHitbox[i].getGlobalBounds()))
         {
-            collisionDirection = hitbox.getPosition() - map.mapHitbox[i].getPosition();
+            collisionDirection = sf::Vector2f(hitbox.getPosition().x + hitbox.getSize().x / 2, hitbox.getPosition().y + hitbox.getSize().y / 2) -
+                sf::Vector2f(map.mapHitbox[i].getPosition().x + map.mapHitbox[i].getSize().x / 2, map.mapHitbox[i].getPosition().y + map.mapHitbox[i].getSize().y / 2);
             collisionDirection = Math::NormalizeVector(collisionDirection);
 
             hitbox.move(collisionDirection.x * 8, collisionDirection.y * 8);
@@ -164,7 +174,7 @@ void Enemy::death()
 void Enemy::enemyDeathAnimation(float deltaTime)
 {
     spriteForDeath.setPosition(deathPosition);
-    
+   
     deathAnimationTime += deltaTime;
 
     if (deathAnimationTime > frameDeathSpeed)
@@ -173,20 +183,60 @@ void Enemy::enemyDeathAnimation(float deltaTime)
         currentDeathFrame++;
     }
 
-    if (currentDeathFrame >= 6)
+    if (currentDeathFrame >= 7)
     {
         deathAnimationComplete = true;
-        std::cout << deathAnimationComplete << std::endl;
         return;
     }
+    if(direction.x < 0) // если повернут, анимация тоже поворачивается
+    {
+        spriteForDeath.setTextureRect(sf::IntRect(96 * int(currentDeathFrame), 288, 96, 96));
+        spriteForDeath.setOrigin(96, 0);
+        spriteForDeath.setScale(-1, 1);
+    }
+    else
+        spriteForDeath.setTextureRect(sf::IntRect(96 * int(currentDeathFrame), 288, 96, 96));
+}
+// метод обзора
+bool Enemy::fieldOfView(float deltaTime, Player& player)
+{
+    float timeForViewing = clockForView.getElapsedTime().asSeconds();
+    
+    std::cout << timeForViewing << std::endl;
 
-    spriteForDeath.setTextureRect(sf::IntRect(64 * int(currentDeathFrame), 0, 64, 64));
+    view.setSize(sf::Vector2f(350, 350));
+    view.setOrigin(175, 175);
+
+    
+    if(inTheViewing)
+    {
+        view.setSize(sf::Vector2f(500, 500));
+        view.setOrigin(250, 250);
+    }
+
+    view.setPosition(hitbox.getPosition().x + hitbox.getSize().x / 2, hitbox.getPosition().y + hitbox.getSize().y / 2);
+    view.setFillColor(sf::Color::Transparent); view.setOutlineColor(sf::Color::Green); view.setOutlineThickness(2);
+
+    if (view.getGlobalBounds().intersects(player.getHitbox().getGlobalBounds()))
+    {
+        clockForView.restart();
+
+        inTheViewing = true;
+        std::cout << inTheViewing << std::endl;
+    }
+    else if (timeForViewing >= 5)
+    {
+        inTheViewing = false;
+    }
+
+    return inTheViewing;
 }
 
 void Enemy::Update(Player& player, float deltaTime, Map& map)
 {
     if(health > 0)
     {
+        fieldOfView(deltaTime, player);
         movement(player, deltaTime);
         collisions(player, map, deltaTime);
         status();
@@ -194,7 +244,7 @@ void Enemy::Update(Player& player, float deltaTime, Map& map)
     else
     {
         death();
-        if(!deathAnimationComplete)
+        if(!deathAnimationComplete) // пока анимация не выполнена, вызывается метод обработки смерти
             enemyDeathAnimation(deltaTime);
     }
 }
@@ -204,9 +254,10 @@ void Enemy::Draw(sf::RenderWindow& window)
     if(health > 0)
     {
         window.draw(sprite);
-        /*window.draw(hitbox);*/
+        window.draw(hitbox);
         window.draw(rectangleForHP);
         window.draw(boundingRectangleForHP);
+        window.draw(view);
     }
     else if(!deathAnimationComplete)
         window.draw(spriteForDeath);

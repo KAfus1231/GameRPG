@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Info.h"
-
+#include "Animations.h"
 
 int main()
 {
@@ -30,7 +30,7 @@ int main()
     Player player;
     std::vector<Enemy> enemies;
 
-    for (size_t i = 0; i < 12; i++)
+    for (size_t i = 0; i < 1; i++)
     {
         Enemy enemy;
         enemies.push_back(enemy);
@@ -84,16 +84,19 @@ int main()
         map.Update(deltaTime);
         player.Update(event, window, deltaTime, enemies, map);
 
-        /*for (size_t i = 0; i < enemyCount; i++)
+        for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Update(player, deltaTime, map);
-        }*/
+        }
+
         map.DrawFirstLayer(window);
         player.Draw(window);
-        /*for (size_t i = 0; i < enemyCount; i++)
+
+        for (size_t i = 0; i < enemyCount; i++)
         {
             enemies[i].Draw(window);
-        }*/
+        }
+
         map.DrawSecondLayer(window);
 
 
