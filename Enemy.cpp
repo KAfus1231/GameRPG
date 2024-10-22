@@ -31,7 +31,7 @@ void Enemy::Initialize() {
     size = sf::Vector2i(96, 96); // размер врага
 }
 
-void Enemy::Load()
+void Enemy::Load(Map &map)
 {
     try
     {
@@ -50,15 +50,7 @@ void Enemy::Load()
 
         hitbox.setSize(sf::Vector2f(45, 50)); // утсановка размера контура
 
-        //int spawn = std::rand() % 4; // установка случайной пизиции для врага
-        //switch (spawn)
-        //{
-        //case 0: hitbox.setPosition(sf::Vector2f(170, 170)); break;
-        //case 1: hitbox.setPosition(sf::Vector2f(170, 1000)); break;
-        //case 2: hitbox.setPosition(sf::Vector2f(1800, 170)); break;
-        //case 3: hitbox.setPosition(sf::Vector2f(1800, 1000)); break;
-        //}
-        hitbox.setPosition(sf::Vector2f(0, 800));
+        hitbox.setPosition(map.getEnemyStartPosition());
     }
     catch(const char* errMsg)
     {
@@ -200,24 +192,21 @@ void Enemy::enemyDeathAnimation(float deltaTime)
 // метод обзора
 bool Enemy::fieldOfView(float deltaTime, Player& player)
 {
-    float timeForViewing = clockForView.getElapsedTime().asSeconds();
+    float timeForViewing = clockForView.getElapsedTime().asSeconds(); // таймер для фиксации обзора
     
-    std::cout << timeForViewing << std::endl;
-
-    view.setSize(sf::Vector2f(350, 350));
+    view.setSize(sf::Vector2f(350, 350)); // по умолчанию размер 
     view.setOrigin(175, 175);
 
-    
-    if(inTheViewing)
+    if(inTheViewing) // если игрок попал в обзор, то обзор на время становится больше
     {
         view.setSize(sf::Vector2f(500, 500));
         view.setOrigin(250, 250);
     }
-
+    // установка позиции обзора
     view.setPosition(hitbox.getPosition().x + hitbox.getSize().x / 2, hitbox.getPosition().y + hitbox.getSize().y / 2);
     view.setFillColor(sf::Color::Transparent); view.setOutlineColor(sf::Color::Green); view.setOutlineThickness(2);
 
-    if (view.getGlobalBounds().intersects(player.getHitbox().getGlobalBounds()))
+    if (view.getGlobalBounds().intersects(player.getHitbox().getGlobalBounds())) // если игрок попал в квадрат обзора, то срабатывает флаг
     {
         clockForView.restart();
 
@@ -229,7 +218,7 @@ bool Enemy::fieldOfView(float deltaTime, Player& player)
         inTheViewing = false;
     }
 
-    return inTheViewing;
+    return inTheViewing; // сам флаг
 }
 
 void Enemy::Update(Player& player, float deltaTime, Map& map)

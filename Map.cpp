@@ -10,9 +10,9 @@ Map::~Map() {}
 void Map::Initialize() // карта 
 {
 	// ПЕРВЫЙ СЛОЙ!!
-	firstLayer[0] =  "    0  0   0  0   0   0            ";
-	firstLayer[1] =  "     0      0    0 0 0             ";
-	firstLayer[2] =  "   0  0    0    0   0              ";
+	firstLayer[0] =  "                                   ";
+	firstLayer[1] =  "                                   ";
+	firstLayer[2] =  "                                   ";
 	firstLayer[3] =  "                                   ";
 	firstLayer[4] =  "   0000000000000                   ";
 	firstLayer[5] =  "   0000000000000                   ";
@@ -65,7 +65,7 @@ void Map::Initialize() // карта
 	thirdLayer[8] =  " III                          I    ";
 	thirdLayer[9] =  "                              I    ";
 	thirdLayer[10] = "                              I    ";
-	thirdLayer[11] = " III       III                I    ";
+	thirdLayer[11] = " III       III          E     I    ";
 	thirdLayer[12] = " I         I                  I    ";
 	thirdLayer[13] = " I         I                  I    ";
 	thirdLayer[14] = " IIIIIIIIIII                  I    ";
@@ -101,7 +101,6 @@ void Map::Load()
 	LayerLoad(firstLayer, firstLayerObjects); // загрузка объектов певрого слоя
 	LayerLoad(secondLayer, secondLayerObjects); // загрузка объектов второго слоя
 	LayerLoad(thirdLayer, thirdLayerObjects);
-
 }
 
 void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
@@ -200,6 +199,10 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 				layerObjects.push_back(sprite);
 				break;
 			
+			case('E'): // враг
+				enemiesPositions.push_back(sf::Vector2f(j * tileWidth, i * tileHeight));
+				break;
+
 			case('C'): // мишень
 				Combat* combat = new Combat();
 				combat->CreateAnimation();
@@ -207,6 +210,7 @@ void Map::LayerLoad(sf::String layer[], std::vector<sf::Sprite>& layerObjects)
 				CreateHitbox(*combat->getSprite(), tileWidth * 2, tileHeight * 6, 47, 25);
 				animationObjects.push_back(combat);
 				break;
+
 			}
 		}
 }
@@ -243,8 +247,8 @@ void Map::DrawFirstLayer(sf::RenderWindow& window)
 		window.draw(*animSprite);
 	}
 
-	/*for (const auto& hitbox : mapHitbox)
-		window.draw(hitbox);*/
+	for (const auto& hitbox : mapHitbox)
+		window.draw(hitbox);
 }
 
 // отрисовка второго слоя карты
@@ -252,4 +256,14 @@ void Map::DrawSecondLayer(sf::RenderWindow& window)
 {
 	for (const auto& hitbox : thirdLayerObjects)
 		window.draw(hitbox);
+}
+
+sf::Vector2f Map::getEnemyStartPosition()
+{
+	if (!enemiesPositions.empty())
+	{
+		sf::Vector2f enemyPosition = enemiesPositions.front();
+		enemiesPositions.erase(enemiesPositions.begin());
+		return enemyPosition;
+	}
 }

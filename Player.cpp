@@ -63,13 +63,12 @@ void Player::Load() // загрузка персонажа
 void Player::shoot(sf::RenderWindow& window, float deltaTime)
 {
     float timeForBullets = clockForBullets.getElapsedTime().asSeconds(); // время с момента запуска таймера для пуль
-    //sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-    //sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition); // преобразование 2i к 2f *не знаю нах, но пусть будет*
+   /* sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePositionWindow = window.mapPixelToCoords(mousePosition);*/ // преобразование 2i к 2f *не знаю нах, но пусть будет*
 
     if (isShooting)
     {
         shootAnimationTime += deltaTime;
-
         if (shootAnimationTime > 80)
         {
             shootAnimationTime = 0;
@@ -85,7 +84,7 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
     {
         isShooting = false;
 
-        if (timeForBullets > reloadingSpeed)
+        if (timeForBullets > reloadingSpeed) // перезарядка ствола
             isReloading = false;
     }
 
@@ -96,13 +95,15 @@ void Player::shoot(sf::RenderWindow& window, float deltaTime)
         bullet.setFillColor(sf::Color::Blue);
         bullets.push_back(bullet); // добавление новой пули в вектор
         bullets[bullets.size() - 1].setPosition(hitbox.getPosition() + sf::Vector2f(22.5, 25));
-        //bulletDirection = mousePositionWindow - bullets[bullets.size() - 1].getPosition(); // направление выстрела
+        /*bulletDirection = mousePositionWindow - bullets[bullets.size() - 1].getPosition();*/ // направление выстрела
         
         bulletDirection = Math::NormalizeVector(bulletDirection); // нормализация вектора
         bulletsDirection.push_back(bulletDirection); // добавление в вектор позиции курсора
 
-        isShooting = true;
-        isReloading = true;
+        isShooting = true; // флаг стрельбы
+        isReloading = true; // флаг перезарядки
+
+        /*hitbox.move(-bulletDirection * deltaTime * playerSpeed * 12.0f);*/
 
         clockForBullets.restart();
     }
@@ -296,7 +297,7 @@ bool Player::collisions(std::vector<Enemy>& enemies, Map& map, float deltaTime)
             //столкновение игрока и врага
             if (hitbox.getGlobalBounds().intersects(enemies[i].getEnemySprite().getGlobalBounds()) && !enemies[i].getEnemyIsDead())
             {
-                /*health -= 10;*/
+                health -= 10;
                 hitbox.move(enemies[i].getEnemyDirection() * deltaTime * bounceForce * 5.0f);
                 isEnemyCollision = true;
                 if (timeForCollision < 0.7)

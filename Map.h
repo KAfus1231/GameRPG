@@ -2,10 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Player.h"
+#include "Enemy.h"
 #include "Animations.h"
 
-class Player;
 class Animations;
+class Player;
+class Enemy;
 
 class Map
 {
@@ -27,7 +29,7 @@ private:
 	std::vector<sf::Sprite> secondLayerObjects;
 	std::vector<sf::Sprite> thirdLayerObjects;
 	std::vector<Animations*> animationObjects;
-
+	
 	std::vector<sf::RectangleShape> mapHitbox; // хитбоксы для обхектов на карте
 	sf::RectangleShape hitbox;
 
@@ -48,5 +50,9 @@ public:
 	void Update(float deltaTime);
 	void DrawFirstLayer(sf::RenderWindow& window);
 	void DrawSecondLayer(sf::RenderWindow& window);
+
+	std::vector<sf::Vector2f> enemiesPositions; // ветор для хранения стартовой позиции игрока
+
+	sf::Vector2f getEnemyStartPosition(); // получение стартовой позиции врага
 };
 

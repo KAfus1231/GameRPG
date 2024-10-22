@@ -46,7 +46,7 @@ private:
 	float frame = 0; // кадр персонажа
 	float frameSpeed = 0.2f; //скорость смены кадров анимации
 
-	float reloadingSpeed = 0.2f; // скорость смены кадров стрельбы
+	float reloadingSpeed = 0.3f; // скорость смены кадров стрельбы
 	float shootingFrame = 0;
 
 	float shootAnimationTime = 0;

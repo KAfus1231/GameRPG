@@ -15,7 +15,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 16; // буферизация
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "RPG", sf::Style::Default, settings);
-    window.setFramerateLimit(144);
+    window.setFramerateLimit(60);
     sf::RectangleShape backGround;
     backGround.setFillColor(sf::Color(128, 0, 128));
     backGround.setSize(sf::Vector2f(10000, 10000));
@@ -30,7 +30,7 @@ int main()
     Player player;
     std::vector<Enemy> enemies;
 
-    for (size_t i = 0; i < 1; i++)
+    for (size_t i = 0; i < 3; i++)
     {
         Enemy enemy;
         enemies.push_back(enemy);
@@ -47,7 +47,7 @@ int main()
 
     for (size_t i = 0; i < enemies.size(); i++)
     {
-        enemies[i].Load();
+        enemies[i].Load(map);
     }
 
     // интервал спавна врагов

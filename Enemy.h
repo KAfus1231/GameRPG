@@ -16,6 +16,8 @@ private:
 	sf::Texture textureForDeath;
 	sf::Sprite spriteForDeath;
 
+	std::vector<sf::Vector2f> enemiesPositions; // ветор для хранения стартовой позиции игрока
+
 	// анимация смерти
 	bool isDead = false; // флаг смерти)
 	bool deathAnimationComplete = false; // флан анимации смерти
@@ -60,9 +62,10 @@ public:
 	sf::Vector2f getEnemyDirection(); // геттер направления врага
 	sf::Sprite getEnemySprite();
 	sf::RectangleShape getEnemyHitbox();
+
 	bool getEnemyIsDead();
 	void Initialize();
-	void Load();
+	void Load(Map &map);
 	void Update(Player& player, float deltaTime, Map& map);
 	void Draw(sf::RenderWindow& window);
 };
